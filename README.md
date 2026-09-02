@@ -1,27 +1,129 @@
 # web.ludens
 
-Frontend da plataforma **Ludens** — venda de ingressos para um teatro
-comunitário (busca de espetáculos, reserva, compra e confirmação). Aplicação
-web em **React** (Vite).
+Frontend da plataforma **Ludens** — a aplicação web onde o comprador descobre
+espetáculos, reserva assentos, paga por Pix e acompanha as compras, e o admin do
+teatro gerencia espetáculos e sessões.
 
-> Projeto acadêmico do Processo/Grupo 18 — disciplina de Manutenção e Melhoria
-> de Software (Engenharia de Software, Centro Universitário Católica de Santa
-> Catarina).
+> Projeto acadêmico do Processo/Grupo 18 — disciplina de Manutenção e Melhoria de
+> Software (Centro Universitário Católica de Santa Catarina).
 
-## Documentação
+## O que este frontend resolve
 
-Produto, requisitos, arquitetura e padrões de engenharia ficam centralizados em
-**[`gcarvalhow/docs.ludens`](https://github.com/gcarvalhow/docs.ludens)** — este
-repositório só traz o código.
+É a interface da plataforma que se torna a **fonte única de disponibilidade de
+assentos**: a pessoa vê quantos ingressos ainda existem em tempo quase real,
+reserva por 15 minutos (com contador visível), paga por Pix e recebe o ingresso —
+sem risco de comprar um assento já vendido.
 
-- [Escopo do produto](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/product/scope.md)
-- [Requisitos funcionais e não funcionais](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/requirements/functional.md)
-- [Guia de estilo e convenções](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/team/maintainability.md)
-- [Como subir o ambiente localmente](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/team/development.md)
+O produto completo (problema, requisitos RF/RN, contrato de cada feature) vive em
+**[`gcarvalhow/docs.ludens`](https://github.com/gcarvalhow/docs.ludens)**.
 
 ## Stack
 
-React · Vite · ESLint · Prettier.
+| Camada | Tecnologia |
+| --- | --- |
+| Framework | Next.js (App Router) · React 19 |
+| Linguagem | TypeScript em modo estrito |
+| Dados de servidor | TanStack Query v5 |
+| Contrato / validação | Zod (fonte de verdade do tipo; `z.infer`) |
+| Formulários | react-hook-form + `@hookform/resolvers/zod` |
+| UI | Tailwind CSS · shadcn/ui (a adicionar via `npx shadcn init`) |
+| Toasts | Sonner |
+| Qualidade | ESLint (config Next) · Prettier — portão de pipeline |
 
-> **Status:** a iniciar. O detalhamento do frontend (design, camadas de
-> integração) virá numa pasta `frontend/` na documentação.
+## Arquitetura em resumo
+
+Feature-based. As rotas ficam em `src/app/` (App Router); o domínio fica em
+`src/features/{feature}/` (`catalog`, `booking`, `checkout`, `account`). O fluxo
+de abstração é:
+
+```
+src/routes/endpoints.ts
+  → schemas/ (Zod)
+  → server/services/ (request + parse + transform de shape)
+  → server/types/ (z.infer)
+  → hooks/queries e hooks/mutations
+  → hooks/forms
+  → components/ (orchestration)
+  → components/ui/ (apresentação pura)
+```
+
+Páginas e layouts são **Server Components** por padrão; componentes com hooks,
+estado ou handlers levam `'use client'`. `src/app/` é entrypoint de rota, não o
+lugar de regra de negócio de feature.
+
+As regras completas de código estão na skill **`frontend-architecture`** do
+plugin [`gcarvalhow/team.ludens`](https://github.com/gcarvalhow/team.ludens) — já
+habilitado em `.claude/settings.json` (`core` + `frontend`).
+
+### Estrutura do repositório
+
+```text
+src/
+  app/
+    layout.tsx        # <html lang="pt-BR">, Providers, metadata
+    page.tsx          # vitrine (catalog)
+    providers.tsx     # QueryClientProvider + Toaster ('use client')
+    globals.css       # Tailwind
+  features/           # catalog, booking, checkout, account (entram por spec)
+  components/ui/      # shadcn/ui
+  lib/               # fetcher e utilitários compartilhados
+  routes/endpoints.ts
+next.config.mjs
+eslint.config.mjs
+postcss.config.mjs
+tsconfig.json
+```
+
+## Rodar localmente
+
+Pré-requisitos: **Node 20+**.
+
+```bash
+git clone https://github.com/gcarvalhow/web.ludens
+cd web.ludens
+
+cp .env.example .env.local   # quando existir; hoje só NEXT_PUBLIC_API_URL
+npm install
+npm run dev
+```
+
+- App em `http://localhost:3000`.
+- `npm run build` — build de produção (inclui type check do TypeScript).
+- `npm run lint` — ESLint.
+- `npm run format` — Prettier.
+
+### Variáveis de ambiente
+
+Lidas de `.env.local`. Só variáveis `NEXT_PUBLIC_*` chegam ao browser.
+
+| Variável | Padrão (dev) | Para que serve |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | Base da API (`api.ludens`). O `src/routes/endpoints.ts` monta as URLs a partir daqui. |
+
+Cada feature acrescenta o que precisar (sem segredo no frontend — só o backend
+guarda chave de gateway, SMTP, etc.).
+
+## Fluxo de trabalho
+
+Ative o plugin do time e abra uma **sessão nova**:
+
+```bash
+claude plugin marketplace add gcarvalhow/team.ludens
+claude plugin install core@team-ludens --scope project
+claude plugin install frontend@team-ludens --scope project
+# /team-ludens:setup
+```
+
+Trunk é `master`; branches curtas em inglês (`feat/NN-slug`); **Conventional
+Commits em português**; issues e backlog no
+[Project `@ludens`](https://github.com/orgs/gcarvalhow/projects/2). Portões de
+merge: `npm run lint` + `npm run build` verdes + 1 aprovação.
+
+## Documentação de referência
+
+- [Escopo do produto](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/product/scope.md) · [Requisitos](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/requirements/functional.md)
+- [Specs das features (N1)](https://github.com/gcarvalhow/docs.ludens/tree/HEAD/specs) — contrato backend→frontend em `integration.md`
+- [Ambiente de desenvolvimento](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/team/development.md)
+
+> **Status:** bootstrap Next.js + TypeScript pronto; as features começam a ser
+> implementadas a partir das specs.
