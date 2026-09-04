@@ -1,0 +1,630 @@
+/* =========================
+   CENA
+========================= */
+
+.home-scene {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  overflow-x: hidden;
+
+  background: #080303;
+}
+
+/* =========================
+   PÁGINA
+========================= */
+
+.home-page {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  color: #f5ead4;
+
+  background:
+    radial-gradient(
+      ellipse at center 35%,
+      rgba(145, 75, 25, 0.23) 0%,
+      rgba(70, 20, 15, 0.12) 35%,
+      rgba(7, 3, 3, 0.95) 75%
+    ),
+    linear-gradient(
+      180deg,
+      #180807 0%,
+      #0b0403 55%,
+      #050202 100%
+    );
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  overflow-x: hidden;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.home-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 100;
+
+  height: 86px;
+
+  padding: 0 4%;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(55, 5, 7, 0.96),
+      rgba(28, 5, 5, 0.96),
+      rgba(55, 5, 7, 0.96)
+    );
+
+  border-bottom:
+    1px solid rgba(203, 164, 92, 0.2);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   MARCA
+========================= */
+
+.home-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  white-space: nowrap;
+}
+
+.home-brand span {
+  color: #d8ae62;
+
+  font-size: 14px;
+
+  text-shadow:
+    0 0 12px rgba(216, 174, 98, 0.5);
+}
+
+.home-brand strong {
+  font-family: Georgia, serif;
+
+  color: #f5ead4;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.home-navbar nav {
+  position: absolute;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 42px;
+}
+
+.home-navbar nav a {
+  position: relative;
+
+  color:
+    rgba(245, 234, 212, 0.7);
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  transition:
+    color 0.25s ease;
+}
+
+.home-navbar nav a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -8px;
+
+  width: 0;
+  height: 1px;
+
+  background: #d8ae62;
+
+  transform:
+    translateX(-50%);
+
+  transition:
+    width 0.25s ease;
+}
+
+.home-navbar nav a:hover {
+  color: #d8ae62;
+}
+
+.home-navbar nav a:hover::after {
+  width: 100%;
+}
+
+/* =========================
+   BOTÃO SAIR
+========================= */
+
+.logout-button {
+  min-width: 90px;
+
+  padding:
+    11px 22px;
+
+  background: transparent;
+
+  border:
+    1px solid rgba(203, 164, 92, 0.35);
+
+  color:
+    rgba(245, 234, 212, 0.85);
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.logout-button:hover {
+  color: #180c05;
+
+  background: #d8ae62;
+
+  border-color: #d8ae62;
+
+  box-shadow:
+    0 0 20px rgba(216, 174, 98, 0.25);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.home-hero {
+  position: relative;
+
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding:
+    180px 12%
+    100px;
+
+  overflow: hidden;
+}
+
+/* =========================
+   CONTEÚDO HERO
+========================= */
+
+.hero-content {
+  position: relative;
+
+  z-index: 20;
+
+  max-width: 750px;
+
+  margin: 0 auto;
+}
+
+.hero-overline {
+  display: inline-block;
+
+  margin-bottom: 18px;
+
+  color: #d8ae62;
+
+  font-size: 11px;
+
+  letter-spacing: 6px;
+
+  text-transform: uppercase;
+}
+
+.hero-content h1 {
+  margin:
+    0 0
+    28px;
+
+  font-family: Georgia, serif;
+
+  font-size:
+    clamp(
+      50px,
+      7vw,
+      88px
+    );
+
+  line-height: 1.03;
+
+  font-weight: 400;
+
+  letter-spacing: -1px;
+}
+
+.hero-content h1 em {
+  font-weight: 400;
+
+  font-style: italic;
+
+  color: #d8ae62;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f0d39b,
+      #bd8a3e
+    );
+
+  background-clip: text;
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+  max-width: 510px;
+
+  margin:
+    0 auto
+    40px;
+
+  color:
+    rgba(245, 234, 212, 0.58);
+
+  font-size: 16px;
+
+  line-height: 1.8;
+}
+
+/* =========================
+   BOTÃO HERO
+========================= */
+
+.hero-button {
+  padding:
+    16px 36px;
+
+  border:
+    1px solid rgba(218, 177, 94, 0.75);
+
+  background:
+    linear-gradient(
+      135deg,
+      #a87a35,
+      #cfa453
+    );
+
+  color: #180c05;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 2.5px;
+
+  cursor: pointer;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.hero-button:hover {
+  transform:
+    translateY(-3px);
+
+  filter:
+    brightness(1.08);
+
+  box-shadow:
+    0 12px 35px
+    rgba(198, 155, 81, 0.3);
+}
+
+.hero-button span {
+  transition:
+    transform 0.25s ease;
+}
+
+.hero-button:hover span {
+  transform:
+    translateX(5px);
+}
+
+/* =========================
+   LUZ DO PALCO
+========================= */
+
+.hero-light {
+  position: absolute;
+
+  z-index: 1;
+
+  top: 130px;
+  left: 50%;
+
+  width:
+    min(900px, 90vw);
+
+  height: 700px;
+
+  transform:
+    translateX(-50%);
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 190, 90, 0.18) 0%,
+      rgba(160, 70, 30, 0.08) 35%,
+      transparent 70%
+    );
+
+  filter:
+    blur(20px);
+}
+
+/* =========================
+   SOBRE
+========================= */
+
+.home-section {
+  position: relative;
+
+  min-height: 65vh;
+
+  box-sizing: border-box;
+
+  padding:
+    120px 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #070303 0%,
+      #0d0504 50%,
+      #130806 100%
+    );
+
+  border-top:
+    1px solid rgba(203, 164, 92, 0.08);
+}
+
+.section-label {
+  color: #c69b51;
+
+  font-size: 11px;
+
+  letter-spacing: 5px;
+
+  text-transform: uppercase;
+}
+
+.home-section h2 {
+  margin:
+    22px 0;
+
+  font-family: Georgia, serif;
+
+  font-size:
+    clamp(
+      32px,
+      4.5vw,
+      54px
+    );
+
+  font-weight: 400;
+}
+
+.home-section p {
+  max-width: 580px;
+
+  margin: 0;
+
+  color:
+    rgba(245, 234, 212, 0.58);
+
+  font-size: 15px;
+
+  line-height: 1.8;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.home-footer {
+  position: relative;
+
+  padding:
+    45px 20px;
+
+  text-align: center;
+
+  background: #070303;
+
+  border-top:
+    1px solid rgba(203, 164, 92, 0.12);
+
+  color:
+    rgba(245, 234, 212, 0.4);
+}
+
+.home-footer span {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #c69b51;
+
+  font-size: 16px;
+}
+
+.home-footer p {
+  margin: 0;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .home-navbar {
+    padding:
+      0 25px;
+  }
+
+  .home-navbar nav {
+    gap: 22px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .home-navbar {
+    height: 70px;
+
+    padding:
+      0 18px;
+  }
+
+  .home-navbar nav {
+    display: none;
+  }
+
+  .home-brand strong {
+    font-size: 10px;
+
+    letter-spacing: 2px;
+  }
+
+  .logout-button {
+    min-width: auto;
+
+    padding:
+      9px 15px;
+  }
+
+  .home-hero {
+    padding:
+      140px 35px
+      70px;
+  }
+
+  .hero-content h1 {
+    font-size: 46px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  .hero-light {
+    top: 100px;
+
+    width: 450px;
+    height: 500px;
+  }
+}
