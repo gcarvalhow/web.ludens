@@ -1,43 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import Curtain from "@components/curtain/Curtain";
-import "../styles/LoginPage.css";
+import Curtain from '@components/curtain/Curtain';
+import { LoginForm } from './LoginForm';
+
+import '../styles/LoginPage.css';
 
 export default function LoginView() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const [curtainOpen, setCurtainOpen] = useState(false);
   const [hideLogin, setHideLogin] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setError("");
-
-    if (!email || !password) {
-      setError("Preencha seu e-mail e sua senha.");
-      return;
-    }
-
-    setLoading(true);
-
-    // Some com o login imediatamente
+  const handleLoginSuccess = () => {
     setHideLogin(true);
-
-    // Abre as cortinas
     setCurtainOpen(true);
 
-    // Aguarda a animação e entra na Home
     setTimeout(() => {
-      router.push("/home");
+      router.push('/home');
     }, 1800);
   };
 
@@ -51,7 +33,7 @@ export default function LoginView() {
 
       <main
         className={`login-page ${
-          hideLogin ? "login-hidden" : ""
+          hideLogin ? 'login-hidden' : ''
         }`}
       >
         <div className="login-stage">
@@ -69,91 +51,9 @@ export default function LoginView() {
               </p>
             </div>
 
-            <form
-              className="login-form"
-              onSubmit={handleSubmit}
-            >
-              <div className="form-header">
-                <span>🎭</span>
-
-                <h2>ENTRAR</h2>
-
-                <p>Acesse sua conta</p>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="email">
-                  E-mail
-                </label>
-
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  disabled={loading}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="password">
-                  Senha
-                </label>
-
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  disabled={loading}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
-                />
-              </div>
-
-              {error && (
-                <div className="login-error">
-                  {error}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="login-button"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="loading">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : (
-                  <>
-                    ENTRAR
-                    <span>→</span>
-                  </>
-                )}
-              </button>
-
-              <div className="login-links">
-                <button
-                  type="button"
-                  disabled={loading}
-                  onClick={() =>
-                    alert(
-                      "Página de recuperação em breve."
-                    )
-                  }
-                >
-                  Esqueci minha senha
-                </button>
-              </div>
-            </form>
+            <LoginForm
+              onSuccess={handleLoginSuccess}
+            />
 
             <div className="login-footer">
               <span />
