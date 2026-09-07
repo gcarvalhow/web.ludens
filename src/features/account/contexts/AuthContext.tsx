@@ -15,16 +15,16 @@ import {
   getAccessToken,
   setAccessToken,
 } from '@web/lib/fetcher';
+import { decodeAccessTokenSub } from '@web/lib/jwt';
 
 import { authService } from '@account/services/auth.service';
 
 import type {
-  Buyer,
   LoginRequest,
 } from '@account/server/types/auth.types';
 
 type AuthContextValue = {
-  buyer: Buyer | null;
+  userId: string | null;
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -47,23 +47,17 @@ export function AuthProvider({
     getAccessToken(),
   );
 
-  const [buyer, setBuyer] = useState<Buyer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadBuyer = useCallback(async () => {
-    const data = await authService.fetchMe();
-    setBuyer(data);
-  }, []);
-
-  const setSession = useCallback(
-    async (token: string) => {
-      setAccessToken(token);
-      setAccessTokenState(token);
-
-      await loadBuyer();
-    },
-    [loadBuyer],
+  const userId = useMemo(
+    () => (accessToken ? decodeAccessTokenSub(accessToken) : null),
+    [accessToken],
   );
+
+  const setSession = useCallback(async (token: string) => {
+    setAccessToken(token);
+    setAccessTokenState(token);
+  }, []);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -75,7 +69,6 @@ export function AuthProvider({
     } catch {
       clearAccessToken();
       setAccessTokenState(null);
-      setBuyer(null);
 
       return false;
     }
@@ -96,7 +89,6 @@ export function AuthProvider({
     } finally {
       clearAccessToken();
       setAccessTokenState(null);
-      setBuyer(null);
     }
   }, []);
 
@@ -114,9 +106,9 @@ export function AuthProvider({
 
   const value = useMemo<AuthContextValue>(
     () => ({
-      buyer,
+      userId,
       accessToken,
-      isAuthenticated: Boolean(accessToken && buyer),
+      isAuthenticated: Boolean(accessToken && userId),
       isLoading,
       login,
       logout,
@@ -124,7 +116,7 @@ export function AuthProvider({
       setSession,
     }),
     [
-      buyer,
+      userId,
       accessToken,
       isLoading,
       login,

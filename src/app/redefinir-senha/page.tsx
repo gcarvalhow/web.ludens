@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { ResetPasswordForm } from '@account/components/ResetPasswordForm';
 import '@account/styles/LoginPage.css';
 
@@ -13,7 +15,9 @@ export default function ResetPasswordPage() {
             <p>Crie uma nova senha para sua conta</p>
           </div>
 
-          <ResetPasswordForm />
+          <Suspense fallback={null}>
+            <ResetPasswordForm />
+          </Suspense>
 
           <div className="login-footer">
             <span />

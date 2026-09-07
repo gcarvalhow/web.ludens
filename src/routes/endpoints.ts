@@ -1,14 +1,18 @@
 const AUTH_BASE = '/auth';
+const USERS_BASE = '/users';
 
 export const endpoints = {
   auth: {
-    register: `${AUTH_BASE}/register`,
     login: `${AUTH_BASE}/login`,
     refresh: `${AUTH_BASE}/refresh`,
     logout: `${AUTH_BASE}/logout`,
-    me: `${AUTH_BASE}/me`,
     changePassword: `${AUTH_BASE}/password/change`,
     passwordForgot: `${AUTH_BASE}/password/forgot`,
     passwordReset: `${AUTH_BASE}/password/reset`,
   },
-} as const;   
+  users: {
+    register: USERS_BASE,
+    list: USERS_BASE,
+    byId: (id: string) => `${USERS_BASE}/${id}`,
+  },
+} as const;

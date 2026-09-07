@@ -13,7 +13,7 @@ import type {
 
 export const authService = {
   register(data: RegisterRequest) {
-    return fetcher<TokenResponse>(endpoints.auth.register, {
+    return fetcher<TokenResponse>(endpoints.users.register, {
       method: 'POST',
       body: JSON.stringify(data),
       skipAuth: true,
@@ -42,8 +42,8 @@ export const authService = {
     });
   },
 
-  fetchMe() {
-    return fetcher<Buyer>(endpoints.auth.me, {
+  fetchUserById(id: string) {
+    return fetcher<Buyer>(endpoints.users.byId(id), {
       method: 'GET',
     });
   },

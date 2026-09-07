@@ -4,13 +4,14 @@ import { authService } from '@account/services/auth.service';
 
 export const accountQueryKeys = {
   all: ['account'] as const,
-  me: () => [...accountQueryKeys.all, 'me'] as const,
+  currentUser: (userId: string) =>
+    [...accountQueryKeys.all, 'currentUser', userId] as const,
 };
 
 export const accountQueryOptions = {
-  me: () =>
+  currentUser: (userId: string) =>
     queryOptions({
-      queryKey: accountQueryKeys.me(),
-      queryFn: () => authService.fetchMe(),
+      queryKey: accountQueryKeys.currentUser(userId),
+      queryFn: () => authService.fetchUserById(userId),
     }),
 };
