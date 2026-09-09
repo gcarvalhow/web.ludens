@@ -13,7 +13,7 @@ export function useAuthMutations() {
     mutationFn: authService.register,
 
     onSuccess: async (response) => {
-      await setSession(response.accessToken);
+      await setSession(response.access_token);
 
       toast.success('Conta criada com sucesso.');
     },

@@ -1,2 +1,1 @@
-export * from './AuthCard';
-
+export * from './AuthShell';

@@ -63,7 +63,7 @@ export function AuthProvider({
     try {
       const response = await authService.refresh();
 
-      await setSession(response.accessToken);
+      await setSession(response.access_token);
 
       return true;
     } catch {
@@ -78,7 +78,7 @@ export function AuthProvider({
     async (data: LoginRequest) => {
       const response = await authService.login(data);
 
-      await setSession(response.accessToken);
+      await setSession(response.access_token);
     },
     [setSession],
   );

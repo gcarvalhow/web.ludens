@@ -22,8 +22,8 @@ type FetcherOptions = RequestInit & {
 };
 
 type TokenResponse = {
-  accessToken: string;
-  expiresIn: number;
+  access_token: string;
+  expires_in: number;
 };
 
 async function refreshAccessToken(): Promise<string | null> {
@@ -43,9 +43,9 @@ async function refreshAccessToken(): Promise<string | null> {
 
     const data = (await response.json()) as TokenResponse;
 
-    setAccessToken(data.accessToken);
+    setAccessToken(data.access_token);
 
-    return data.accessToken;
+    return data.access_token;
   } catch {
     clearAccessToken();
     return null;
