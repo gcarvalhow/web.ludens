@@ -15,8 +15,8 @@ export const loginSchema = z.object({
 });
 
 export const changePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
-  newPassword: z.string().min(8, 'A nova senha deve ter pelo menos 8 caracteres.'),
+  current_password: z.string().min(1, 'Senha atual é obrigatória.'),
+  new_password: z.string().min(8, 'A nova senha deve ter pelo menos 8 caracteres.'),
 });
 
 export const forgotSchema = z.object({
@@ -29,14 +29,14 @@ export const resetSchema = z.object({
 });
 
 export const tokenResponseSchema = z.object({
-  accessToken: z.string(),
-  expiresIn: z.number(),
+  access_token: z.string(),
+  expires_in: z.number(),
 });
 
-export const buyerSchema = z.object({
+export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string().email(),
   cpf: z.string(),
-  role: z.enum(['BUYER', 'ADMIN']),
+  is_admin: z.boolean(),
 });

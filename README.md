@@ -26,9 +26,9 @@ O produto completo (problema, requisitos RF/RN, contrato de cada feature) vive e
 | Dados de servidor | TanStack Query v5 |
 | Contrato / validação | Zod (fonte de verdade do tipo; `z.infer`) |
 | Formulários | react-hook-form + `@hookform/resolvers/zod` |
-| UI | Tailwind CSS · shadcn/ui (a adicionar via `npx shadcn init`) |
+| UI | Tailwind CSS · shadcn/ui (style `radix-nova`) · `next-themes` (claro/escuro) |
 | Toasts | Sonner |
-| Qualidade | ESLint (config Next) · Prettier — portão de pipeline |
+| Qualidade | ESLint (config Next) · Prettier — portão de pipeline · Jest (`npm run test`) |
 
 ## Arquitetura em resumo
 
@@ -71,6 +71,7 @@ src/
 next.config.mjs
 eslint.config.mjs
 postcss.config.mjs
+jest.config.ts
 tsconfig.json
 ```
 
@@ -82,7 +83,7 @@ Pré-requisitos: **Node 20+**.
 git clone https://github.com/gcarvalhow/web.ludens
 cd web.ludens
 
-cp .env.example .env.local   # quando existir; hoje só NEXT_PUBLIC_API_URL
+cp .env.example .env.local
 npm install
 npm run dev
 ```
@@ -91,6 +92,19 @@ npm run dev
 - `npm run build` — build de produção (inclui type check do TypeScript).
 - `npm run lint` — ESLint.
 - `npm run format` — Prettier.
+- `npm run test` / `npm run test:watch` — Jest (`schemas/`, `services/`,
+  `lib/`; ver `references/13-testing.md` da skill `frontend-architecture`
+  pro padrão-alvo completo, Playwright incluso).
+
+### Rodando junto com a API
+
+Sem a API de pé, as telas de conta (`/login`, `/registro`, `/recuperar-senha`,
+`/redefinir-senha`) carregam mas toda chamada falha. Suba o
+[`api.ludens`](https://github.com/gcarvalhow/api.ludens) primeiro (ver o README
+de lá — Postgres via `docker/docker-compose.Development.yml`, API via
+`Dockerfile` próprio, porta `8000`; CORS já libera `http://localhost:3000` por
+padrão). Com a API respondendo em `http://localhost:8000` e o `.env.local`
+apontando pra lá, os dois processos conversam sem configuração extra.
 
 ### Variáveis de ambiente
 
@@ -117,7 +131,7 @@ claude plugin install frontend@team-ludens --scope project
 Trunk é `master`; branches curtas em inglês (`feat/NN-slug`); **Conventional
 Commits em português**; issues e backlog no
 [Project `@ludens`](https://github.com/orgs/gcarvalhow/projects/2). Portões de
-merge: `npm run lint` + `npm run build` verdes + 1 aprovação.
+merge: `npm run lint` + `npm run test` + `npm run build` verdes + 1 aprovação.
 
 ## Documentação de referência
 
@@ -125,5 +139,7 @@ merge: `npm run lint` + `npm run build` verdes + 1 aprovação.
 - [Specs das features (N1)](https://github.com/gcarvalhow/docs.ludens/tree/HEAD/specs) — contrato backend→frontend em `integration.md`
 - [Ambiente de desenvolvimento](https://github.com/gcarvalhow/docs.ludens/blob/HEAD/team/development.md)
 
-> **Status:** bootstrap Next.js + TypeScript pronto; as features começam a ser
-> implementadas a partir das specs.
+> **Status:** feature `account` (login, registro, recuperação/redefinição de
+> senha, sessão autenticada) implementada e integrada com o `api.ludens` real
+> — ver `src/features/account/README.md`. Demais features (`catalog`,
+> `booking`, `checkout`) entram por spec.

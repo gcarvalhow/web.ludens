@@ -2,13 +2,13 @@ import { fetcher } from '@web/lib/fetcher';
 import { endpoints } from '@web/routes/endpoints';
 
 import type {
-  Buyer,
   ChangePasswordRequest,
   ForgotPasswordRequest,
   LoginRequest,
   RegisterRequest,
   ResetPasswordRequest,
   TokenResponse,
+  User,
 } from '@account/server/types/auth.types';
 
 export const authService = {
@@ -43,7 +43,7 @@ export const authService = {
   },
 
   fetchUserById(id: string) {
-    return fetcher<Buyer>(endpoints.users.byId(id), {
+    return fetcher<User>(endpoints.users.byId(id), {
       method: 'GET',
     });
   },

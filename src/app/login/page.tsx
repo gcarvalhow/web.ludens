@@ -1,5 +1,10 @@
-import LoginView from "../../features/account/components/LoginView";
+import { AuthShell } from '@account/components/ui';
+import { LoginFormContainer } from '@account/components';
 
 export default function LoginPage() {
-  return <LoginView />;
+  return (
+    <AuthShell title="Entrar" description="Acesse sua conta">
+      <LoginFormContainer />
+    </AuthShell>
+  );
 }

@@ -11,7 +11,7 @@ export const endpoints = {
     passwordReset: `${AUTH_BASE}/password/reset`,
   },
   users: {
-    register: USERS_BASE,
+    register: `${USERS_BASE}/register`,
     list: USERS_BASE,
     byId: (id: string) => `${USERS_BASE}/${id}`,
   },
