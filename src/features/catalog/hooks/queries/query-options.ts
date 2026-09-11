@@ -34,13 +34,12 @@ export const catalogQueryKeys = {
 };
 
 export const catalogQueryOptions = {
- showList: (filters: ShowFilterParams) =>
+  showList: (filters: ShowFilterParams) =>
     queryOptions({
       queryKey:
         catalogQueryKeys.shows(filters),
       queryFn: () =>
         catalogService.fetchShows(filters),
-      staleTime: 30_000,
     }),
 
   genreList: () =>
@@ -48,7 +47,7 @@ export const catalogQueryOptions = {
       queryKey: catalogQueryKeys.genres(),
       queryFn: () =>
         catalogService.fetchGenres(),
-      staleTime: 5 * 60_000,
+      staleTime: 60_000,
     }),
 
   adminShowList: () =>
