@@ -26,6 +26,19 @@ type TokenResponse = {
   expires_in: number;
 };
 
+export class ApiError extends Error {
+  status: number;
+  data: unknown;
+
+  constructor(status: number, data: unknown) {
+    super(`HTTP ${status}`);
+
+    this.name = 'ApiError';
+    this.status = status;
+    this.data = data;
+  }
+}
+
 async function refreshAccessToken(): Promise<string | null> {
   try {
     const response = await fetch(
@@ -117,7 +130,11 @@ async function handleResponse<T>(
   response: Response,
 ): Promise<T> {
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+    const data = await response
+      .json()
+      .catch(() => undefined);
+
+    throw new ApiError(response.status, data);
   }
 
   if (response.status === 204) {
