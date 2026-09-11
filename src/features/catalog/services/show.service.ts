@@ -4,6 +4,7 @@ import { endpoints } from '@web/routes/endpoints';
 import type {
   AdminSession,
   AdminShow,
+  AdminShowSummary,
   SessionFormValues,
   ShowFormValues,
 } from '@catalog/server/types';
@@ -38,15 +39,27 @@ function reviveShow(show: AdminShow): AdminShow {
 }
 
 export const catalogService = {
+  // GET /admin/shows — listagem resumida, sem sessions (api.ludens#21).
   async listAdminShows() {
-    const shows = await fetcher<AdminShow[]>(
+    return fetcher<AdminShowSummary[]>(
       endpoints.catalog.admin.shows.list,
       {
         method: 'GET',
       },
     );
+  },
 
-    return shows.map(reviveShow);
+  // GET /admin/shows/{id} — detalhe completo, com sessions (todas —
+  // passadas, canceladas e futuras, sem filtro).
+  async getAdminShow(id: string) {
+    const show = await fetcher<AdminShow>(
+      endpoints.catalog.admin.shows.byId(id),
+      {
+        method: 'GET',
+      },
+    );
+
+    return reviveShow(show);
   },
 
   async createShow(values: ShowFormValues) {

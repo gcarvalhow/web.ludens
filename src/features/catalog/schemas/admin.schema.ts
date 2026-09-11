@@ -25,18 +25,24 @@ export const adminSessionSchema = z.object({
   can_delete: z.boolean(),
 });
 
-export const adminShowSchema = z.object({
+export const adminShowSummarySchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   synopsis: z.string(),
   image_url: z.string(),
   genre: z.string(),
   status: showStatusEnum,
+});
+
+// GET /admin/shows/{id}, POST e PUT — detalhe completo, com sessions.
+// GET /admin/shows (lista) devolve só o resumo acima, sem sessions —
+// ver issue api.ludens#21 / PR #23.
+export const adminShowSchema = adminShowSummarySchema.extend({
   sessions: z.array(adminSessionSchema),
 });
 
-export const adminShowListSchema =
-  z.array(adminShowSchema);
+export const adminShowSummaryListSchema =
+  z.array(adminShowSummarySchema);
 
 export const showFormSchema = z.object({
   title: z
