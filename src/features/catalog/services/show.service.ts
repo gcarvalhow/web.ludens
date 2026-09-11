@@ -66,10 +66,6 @@ function reviveShow(show: AdminShow): AdminShow {
 }
 
 export const catalogService = {
-<<<<<<< HEAD
-  async listAdminShows() {
-    const shows = await fetcher<AdminShow[]>(
-=======
   fetchShows(filters: ShowFilterParams = {}) {
     return fetcher<PagedShows>(
       `${endpoints.catalog.shows}?${buildQuery(filters)}`,
@@ -90,9 +86,8 @@ export const catalogService = {
     );
   },
 
-  listAdminShows() {
-    return fetcher<AdminShow[]>(
->>>>>>> ce6a084 (feat(catalog): implement public show search)
+  async listAdminShows() {
+    const shows = await fetcher<AdminShow[]>(
       endpoints.catalog.admin.shows.list,
       {
         method: 'GET',
@@ -114,16 +109,11 @@ export const catalogService = {
     return reviveShow(show);
   },
 
-<<<<<<< HEAD
-  async updateShow(id: string, values: ShowFormValues) {
-    const show = await fetcher<AdminShow>(
-=======
-  updateShow(
+  async updateShow(
     id: string,
     values: ShowFormValues,
   ) {
-    return fetcher<AdminShow>(
->>>>>>> ce6a084 (feat(catalog): implement public show search)
+    const show = await fetcher<AdminShow>(
       endpoints.catalog.admin.shows.byId(id),
       {
         method: 'PUT',
@@ -165,15 +155,10 @@ export const catalogService = {
     showId: string,
     values: SessionFormValues,
   ) {
-<<<<<<< HEAD
     const session = await fetcher<AdminSession>(
-      endpoints.catalog.admin.shows.sessions(showId),
-=======
-    return fetcher<AdminSession>(
       endpoints.catalog.admin.shows.sessions(
         showId,
       ),
->>>>>>> ce6a084 (feat(catalog): implement public show search)
       {
         method: 'POST',
         body: JSON.stringify(
@@ -189,15 +174,10 @@ export const catalogService = {
     sessionId: string,
     values: SessionFormValues,
   ) {
-<<<<<<< HEAD
     const session = await fetcher<AdminSession>(
-      endpoints.catalog.admin.sessions.byId(sessionId),
-=======
-    return fetcher<AdminSession>(
       endpoints.catalog.admin.sessions.byId(
         sessionId,
       ),
->>>>>>> ce6a084 (feat(catalog): implement public show search)
       {
         method: 'PUT',
         body: JSON.stringify(
