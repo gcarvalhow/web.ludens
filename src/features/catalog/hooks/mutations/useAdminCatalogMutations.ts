@@ -21,10 +21,14 @@ import type {
 export function useAdminCatalogMutations() {
   const queryClient = useQueryClient();
 
+  // Invalida a chave-pai (`admin.shows()`) — cobre a listagem resumida e
+  // qualquer detalhe de espetáculo aberto (`admin.show(id)`), já que os
+  // dois são filhos dela. Mutation de sessão muda o detalhe; mutation de
+  // espetáculo muda a listagem — mais simples invalidar os dois sempre.
   const invalidate = () =>
     queryClient.invalidateQueries({
       queryKey:
-        catalogQueryKeys.admin.showList(),
+        catalogQueryKeys.admin.shows(),
     });
 
   const createShowMutation = useMutation({

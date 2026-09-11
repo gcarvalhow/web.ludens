@@ -20,28 +20,28 @@ export const endpoints = {
   },
 
   catalog: {
-  shows: '/shows',
-  genres: '/genres',
+    shows: '/shows',
+    genres: '/genres',
 
-  admin: {
-    shows: {
-      list: ADMIN_SHOWS_BASE,
-      create: ADMIN_SHOWS_BASE,
-      byId: (id: string) => `${ADMIN_SHOWS_BASE}/${id}`,
-      publish: (id: string) =>
-        `${ADMIN_SHOWS_BASE}/${id}/publish`,
-      unpublish: (id: string) =>
-        `${ADMIN_SHOWS_BASE}/${id}/unpublish`,
-      sessions: (id: string) =>
-        `${ADMIN_SHOWS_BASE}/${id}/sessions`,
-    },
+    admin: {
+      shows: {
+        list: ADMIN_SHOWS_BASE,
+        create: ADMIN_SHOWS_BASE,
+        byId: (id: string) => `${ADMIN_SHOWS_BASE}/${id}`,
+        publish: (id: string) =>
+          `${ADMIN_SHOWS_BASE}/${id}/publish`,
+        unpublish: (id: string) =>
+          `${ADMIN_SHOWS_BASE}/${id}/unpublish`,
+        sessions: (id: string) =>
+          `${ADMIN_SHOWS_BASE}/${id}/sessions`,
+      },
 
-    sessions: {
-      byId: (id: string) =>
-        `${ADMIN_SESSIONS_BASE}/${id}`,
-      cancel: (id: string) =>
-        `${ADMIN_SESSIONS_BASE}/${id}/cancel`,
+      sessions: {
+        byId: (id: string) =>
+          `${ADMIN_SESSIONS_BASE}/${id}`,
+        cancel: (id: string) =>
+          `${ADMIN_SESSIONS_BASE}/${id}/cancel`,
+      },
     },
   },
-},
 } as const;

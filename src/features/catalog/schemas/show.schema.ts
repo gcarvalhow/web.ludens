@@ -18,6 +18,12 @@ export const pagedShowsSchema = z.object({
   total: z.number().int(),
 });
 
-export const genreListSchema = z.array(
-  z.string(),
-);
+// GET /genres devolve [{ slug, label }], não string[] — confirmado no
+// contrato real (app/modules/catalog/application/schemas/response.py,
+// GenreResponse). Filtro usa o slug; label é o texto exibido.
+export const genreSchema = z.object({
+  slug: z.string(),
+  label: z.string(),
+});
+
+export const genreListSchema = z.array(genreSchema);

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { showFormSchema } from '@catalog/schemas';
 
 import type {
-  AdminShow,
+  AdminShowSummary,
   ShowFormValues,
 } from '@catalog/server/types';
 
@@ -19,7 +19,7 @@ const EMPTY: ShowFormValues = {
 };
 
 export function useShowForm(
-  editing: AdminShow | null,
+  editing: AdminShowSummary | null,
 ) {
   const form = useForm<ShowFormValues>({
     resolver: zodResolver(showFormSchema),

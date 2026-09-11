@@ -24,4 +24,11 @@ export function useAdminShowList() {
   return useQuery(
     catalogQueryOptions.adminShowList(),
   );
-} 
+}
+
+export function useAdminShow(id: string | null) {
+  return useQuery({
+    ...catalogQueryOptions.adminShow(id ?? ''),
+    enabled: id !== null,
+  });
+}

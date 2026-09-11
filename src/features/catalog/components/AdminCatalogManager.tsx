@@ -30,12 +30,12 @@ import { formatDateTime } from '@catalog/lib';
 
 import type {
   AdminSession,
-  AdminShow,
+  AdminShowSummary,
 } from '@catalog/server/types';
 
 type ShowPanel =
   | { mode: 'create' }
-  | { mode: 'edit'; show: AdminShow }
+  | { mode: 'edit'; show: AdminShowSummary }
   | null;
 
 type SessionPanel = {

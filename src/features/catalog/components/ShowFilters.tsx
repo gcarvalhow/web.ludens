@@ -55,10 +55,10 @@ export function ShowFilters() {
           {(genresQuery.data ?? []).map(
             (genre) => (
               <option
-                key={genre}
-                value={genre}
+                key={genre.slug}
+                value={genre.slug}
               >
-                {genre}
+                {genre.label}
               </option>
             ),
           )}
