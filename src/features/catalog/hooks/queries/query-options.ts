@@ -14,6 +14,13 @@ export const catalogQueryKeys = {
         ...catalogQueryKeys.admin.shows(),
         'list',
       ] as const,
+
+    show: (id: string) =>
+      [
+        ...catalogQueryKeys.admin.shows(),
+        'detail',
+        id,
+      ] as const,
   },
 };
 
@@ -22,6 +29,13 @@ export const catalogQueryOptions = {
     queryOptions({
       queryKey: catalogQueryKeys.admin.showList(),
       queryFn: () => catalogService.listAdminShows(),
+      staleTime: 10_000,
+    }),
+
+  adminShow: (id: string) =>
+    queryOptions({
+      queryKey: catalogQueryKeys.admin.show(id),
+      queryFn: () => catalogService.getAdminShow(id),
       staleTime: 10_000,
     }),
 };

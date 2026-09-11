@@ -9,3 +9,10 @@ export function useAdminShowList() {
     catalogQueryOptions.adminShowList(),
   );
 }
+
+export function useAdminShow(id: string | null) {
+  return useQuery({
+    ...catalogQueryOptions.adminShow(id ?? ''),
+    enabled: id !== null,
+  });
+}
