@@ -9,6 +9,8 @@ import {
   useCurrentUser,
 } from '@account';
 
+import { Skeleton } from '@components/ui/skeleton';
+
 interface RequireAdminProps {
   children: ReactNode;
 }
@@ -35,11 +37,17 @@ function AdminGate({
     }
   }, [isLoading, user, router]);
 
-  if (
-    isLoading ||
-    !user ||
-    !user.is_admin
-  ) {
+  if (isLoading) {
+    return (
+      <main className="mx-auto max-w-4xl space-y-6 p-6">
+        <Skeleton className="h-9 w-64" />
+        <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-40 w-full" />
+      </main>
+    );
+  }
+
+  if (!user || !user.is_admin) {
     return null;
   }
 

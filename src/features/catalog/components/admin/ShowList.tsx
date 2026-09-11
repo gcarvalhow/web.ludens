@@ -1,6 +1,23 @@
 'use client';
 
-import { SHOW_STATUS_LABELS } from '@catalog/constants';
+import {
+  CalendarPlus,
+  Eye,
+  EyeOff,
+  Pencil,
+  Trash2,
+} from 'lucide-react';
+
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from '@components/ui/card';
+import { Separator } from '@components/ui/separator';
+
+import { SHOW_STATUS_BADGE_VARIANT, SHOW_STATUS_LABELS } from '@catalog/constants';
 
 import { SessionRow } from './SessionRow';
 
@@ -36,90 +53,111 @@ export function ShowList({
   onDeleteSession,
 }: ShowListProps) {
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-5">
       {shows.map((show) => (
-        <section
+        <Card
           key={show.id}
-          className="rounded-lg border border-gray-200 p-4"
+          className="border-t-2 border-t-primary/70"
         >
-          <header className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg font-semibold">
-                {show.title}
-              </h2>
+          <CardHeader className="gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="font-heading text-lg font-semibold">
+                    {show.title}
+                  </h2>
 
-              <span className="rounded bg-gray-100 px-2 py-0.5 text-xs">
-                {SHOW_STATUS_LABELS[show.status]}
-              </span>
+                  <Badge variant={SHOW_STATUS_BADGE_VARIANT[show.status]}>
+                    {SHOW_STATUS_LABELS[show.status]}
+                  </Badge>
+                </div>
 
-              <span className="text-sm text-gray-500">
-                {show.genre}
-              </span>
+                <span className="text-sm text-muted-foreground">
+                  {show.genre}
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="min-h-11"
+                  onClick={() => onEditShow(show)}
+                >
+                  <Pencil />
+                  Editar
+                </Button>
+
+                {show.status === 'draft' ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="min-h-11 border-emerald-300 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/40"
+                    onClick={() => onPublish(show)}
+                  >
+                    <Eye />
+                    Publicar
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="min-h-11"
+                    onClick={() => onUnpublish(show)}
+                  >
+                    <EyeOff />
+                    Despublicar
+                  </Button>
+                )}
+
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="min-h-11"
+                  onClick={() => onDeleteShow(show)}
+                >
+                  <Trash2 />
+                  Excluir
+                </Button>
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => onEditShow(show)}
-                className="min-h-11 rounded-md border border-gray-300 px-3 text-sm"
-              >
-                Editar
-              </button>
+            <p className="text-sm text-muted-foreground">
+              {show.synopsis}
+            </p>
+          </CardHeader>
 
-              {show.status === 'draft' ? (
-                <button
-                  type="button"
-                  onClick={() => onPublish(show)}
-                  className="min-h-11 rounded-md border border-green-300 px-3 text-sm text-green-700"
-                >
-                  Publicar
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => onUnpublish(show)}
-                  className="min-h-11 rounded-md border border-gray-300 px-3 text-sm"
-                >
-                  Despublicar
-                </button>
-              )}
+          <Separator />
 
-              <button
-                type="button"
-                onClick={() => onDeleteShow(show)}
-                className="min-h-11 rounded-md border border-red-300 px-3 text-sm text-red-700"
-              >
-                Excluir
-              </button>
-            </div>
-          </header>
-
-          <p className="mt-2 text-sm text-gray-600">
-            {show.synopsis}
-          </p>
-
-          <div className="mt-4">
+          <CardContent className="flex flex-col gap-2 pt-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold">
                 Sessões
               </h3>
 
-              <button
+              <Button
                 type="button"
+                variant="secondary"
+                size="sm"
+                className="min-h-11"
                 onClick={() => onNewSession(show.id)}
-                className="min-h-11 rounded-md border border-gray-300 px-3 text-sm"
               >
+                <CalendarPlus />
                 Nova sessão
-              </button>
+              </Button>
             </div>
 
             {show.sessions.length === 0 ? (
-              <p className="mt-2 text-sm text-gray-500">
-                Nenhuma sessão. Um espetáculo sem sessão
-                futura não aparece na vitrine.
+              <p className="rounded-lg border border-dashed border-border py-6 text-center text-sm text-muted-foreground">
+                Nenhuma sessão. Um espetáculo sem sessão futura
+                não aparece na vitrine.
               </p>
             ) : (
-              <ul className="mt-2">
+              <ul>
                 {show.sessions.map((session) => (
                   <SessionRow
                     key={session.id}
@@ -137,8 +175,8 @@ export function ShowList({
                 ))}
               </ul>
             )}
-          </div>
-        </section>
+          </CardContent>
+        </Card>
       ))}
     </div>
   );

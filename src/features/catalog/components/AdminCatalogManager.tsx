@@ -1,6 +1,18 @@
 'use client';
 
+import { Drama, Plus, RotateCw, TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
+
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
+import { Skeleton } from '@components/ui/skeleton';
 
 import {
   SessionForm,
@@ -30,6 +42,24 @@ type SessionPanel = {
   showId: string;
   session: AdminSession | null;
 } | null;
+
+function CatalogLoadingState() {
+  return (
+    <div className="flex flex-col gap-5">
+      {[0, 1].map((key) => (
+        <div
+          key={key}
+          className="space-y-3 rounded-xl border border-border p-5"
+        >
+          <Skeleton className="h-5 w-48" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="mt-2 h-16 w-full" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function AdminCatalogManager() {
   const query = useAdminShowList();
@@ -139,143 +169,210 @@ export function AdminCatalogManager() {
     );
   };
 
-  if (query.isLoading) {
-    return (
-      <p className="p-6 text-sm text-gray-500">
-        Carregando espetáculos...
-      </p>
-    );
-  }
-
-  if (query.isError) {
-    return (
-      <div className="p-6 text-sm">
-        <p className="text-red-600">
-          Não foi possível carregar os espetáculos.
-        </p>
-
-        <button
-          type="button"
-          onClick={() => void query.refetch()}
-          className="mt-2 min-h-11 rounded-md border border-gray-300 px-4"
-        >
-          Tentar de novo
-        </button>
-      </div>
-    );
-  }
-
-  const shows = query.data ?? [];
-
   const editingSessionTicketsSold =
     sessionPanel?.session?.tickets_sold ?? 0;
 
+  const shows = query.data ?? [];
+
   return (
     <main className="mx-auto max-w-4xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">
-          Espetáculos e sessões
-        </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Drama className="size-5" />
+          </span>
 
-        <button
+          <div>
+            <h1 className="font-heading text-2xl font-semibold tracking-tight">
+              Espetáculos e sessões
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Gerencie o catálogo que alimenta a vitrine do teatro.
+            </p>
+          </div>
+        </div>
+
+        <Button
           type="button"
+          className="min-h-11 px-4"
           onClick={() =>
             setShowPanel({
               mode: 'create',
             })
           }
-          className="min-h-11 rounded-md bg-gray-900 px-4 text-sm font-medium text-white"
         >
+          <Plus />
           Novo espetáculo
-        </button>
+        </Button>
       </div>
 
-      {showPanel ? (
-        <ShowForm
-          form={showForm}
-          onSubmit={submitShow}
-          onCancel={() =>
-            setShowPanel(null)
-          }
-          isPending={showPending}
-          mode={showPanel.mode}
-        />
+      {query.isLoading ? <CatalogLoadingState /> : null}
+
+      {query.isError ? (
+        <Alert variant="destructive">
+          <TriangleAlert />
+          <AlertTitle>Não foi possível carregar os espetáculos</AlertTitle>
+          <AlertDescription className="flex flex-col gap-3">
+            <span>
+              Verifique sua conexão e tente novamente.
+            </span>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="min-h-11 w-fit"
+              onClick={() => void query.refetch()}
+            >
+              <RotateCw />
+              Tentar de novo
+            </Button>
+          </AlertDescription>
+        </Alert>
       ) : null}
 
-      {sessionPanel ? (
-        <SessionForm
-          form={sessionForm}
-          onSubmit={submitSession}
-          onCancel={() =>
-            setSessionPanel(null)
-          }
-          isPending={sessionPending}
-          mode={
-            sessionPanel.session
-              ? 'edit'
-              : 'create'
-          }
-          ticketsSold={
-            editingSessionTicketsSold
-          }
-        />
-      ) : null}
+      {!query.isLoading && !query.isError ? (
+        shows.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
+            <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Drama className="size-6" />
+            </span>
 
-      {shows.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
-          Nenhum espetáculo cadastrado ainda.
-          Crie o primeiro para começar a montar
-          o catálogo.
-        </p>
-      ) : (
-        <ShowList
-          shows={shows}
-          onEditShow={(show) =>
-            setShowPanel({
-              mode: 'edit',
-              show,
-            })
-          }
-          onPublish={(show) =>
-            publishShowMutation.mutate(
-              show.id,
-            )
-          }
-          onUnpublish={(show) =>
-            unpublishShowMutation.mutate(
-              show.id,
-            )
-          }
-          onDeleteShow={(show) =>
-            deleteShowMutation.mutate(
-              show.id,
-            )
-          }
-          onNewSession={(showId) =>
-            setSessionPanel({
-              showId,
-              session: null,
-            })
-          }
-          onEditSession={(
-            showId,
-            session,
-          ) =>
-            setSessionPanel({
+            <div className="space-y-1">
+              <p className="font-medium">
+                Nenhum espetáculo cadastrado ainda
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Crie o primeiro para começar a montar o catálogo.
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              className="min-h-11 px-4"
+              onClick={() =>
+                setShowPanel({
+                  mode: 'create',
+                })
+              }
+            >
+              <Plus />
+              Novo espetáculo
+            </Button>
+          </div>
+        ) : (
+          <ShowList
+            shows={shows}
+            onEditShow={(show) =>
+              setShowPanel({
+                mode: 'edit',
+                show,
+              })
+            }
+            onPublish={(show) =>
+              publishShowMutation.mutate(
+                show.id,
+              )
+            }
+            onUnpublish={(show) =>
+              unpublishShowMutation.mutate(
+                show.id,
+              )
+            }
+            onDeleteShow={(show) =>
+              deleteShowMutation.mutate(
+                show.id,
+              )
+            }
+            onNewSession={(showId) =>
+              setSessionPanel({
+                showId,
+                session: null,
+              })
+            }
+            onEditSession={(
               showId,
               session,
-            })
-          }
-          onCancelSession={(session) =>
-            setCancelTarget(session)
-          }
-          onDeleteSession={(session) =>
-            deleteSessionMutation.mutate(
-              session.id,
-            )
-          }
-        />
-      )}
+            ) =>
+              setSessionPanel({
+                showId,
+                session,
+              })
+            }
+            onCancelSession={(session) =>
+              setCancelTarget(session)
+            }
+            onDeleteSession={(session) =>
+              deleteSessionMutation.mutate(
+                session.id,
+              )
+            }
+          />
+        )
+      ) : null}
+
+      <Dialog
+        open={showPanel !== null}
+        onOpenChange={(open) => {
+          if (!open && !showPending) setShowPanel(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {showPanel?.mode === 'edit'
+                ? 'Editar espetáculo'
+                : 'Novo espetáculo'}
+            </DialogTitle>
+            <DialogDescription>
+              Título, sinopse e categoria aparecem na vitrine assim
+              que o espetáculo é publicado.
+            </DialogDescription>
+          </DialogHeader>
+
+          <ShowForm
+            form={showForm}
+            onSubmit={submitShow}
+            onCancel={() => setShowPanel(null)}
+            isPending={showPending}
+            mode={showPanel?.mode === 'edit' ? 'edit' : 'create'}
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={sessionPanel !== null}
+        onOpenChange={(open) => {
+          if (!open && !sessionPending) setSessionPanel(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {sessionPanel?.session ? 'Editar sessão' : 'Nova sessão'}
+            </DialogTitle>
+            <DialogDescription>
+              Data, local, capacidade e preço da sessão dentro do
+              espetáculo.
+            </DialogDescription>
+          </DialogHeader>
+
+          <SessionForm
+            form={sessionForm}
+            onSubmit={submitSession}
+            onCancel={() => setSessionPanel(null)}
+            isPending={sessionPending}
+            mode={
+              sessionPanel?.session
+                ? 'edit'
+                : 'create'
+            }
+            ticketsSold={
+              editingSessionTicketsSold
+            }
+          />
+        </DialogContent>
+      </Dialog>
 
       <ConfirmCancelSessionDialog
         open={cancelTarget !== null}
@@ -299,4 +396,4 @@ export function AdminCatalogManager() {
       />
     </main>
   );
-}	
+}

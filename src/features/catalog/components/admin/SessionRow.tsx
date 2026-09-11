@@ -1,6 +1,18 @@
 'use client';
 
-import { SESSION_STATUS_LABELS } from '@catalog/constants';
+import {
+  CalendarClock,
+  MapPin,
+  Users,
+} from 'lucide-react';
+
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+
+import {
+  SESSION_STATUS_BADGE_VARIANT,
+  SESSION_STATUS_LABELS,
+} from '@catalog/constants';
 import {
   formatDateTime,
   formatPriceBRL,
@@ -24,45 +36,49 @@ export function SessionRow({
   const canCancel = session.status === 'on_sale';
 
   return (
-    <li className="flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 py-2 text-sm">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="font-medium">
+    <li className="flex flex-col gap-3 border-t border-border/60 py-3 first:border-t-0 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
+        <span className="flex items-center gap-1.5 font-medium text-foreground">
+          <CalendarClock className="size-4 text-primary" />
           {formatDateTime(session.starts_at)}
         </span>
 
-        <span className="text-gray-600">
+        <span className="flex items-center gap-1.5 text-muted-foreground">
+          <MapPin className="size-4" />
           {session.venue}
         </span>
 
-        <span className="text-gray-600">
-          Cap. {session.capacity}
+        <span className="flex items-center gap-1.5 text-muted-foreground">
+          <Users className="size-4" />
+          {session.tickets_sold} / {session.capacity}
         </span>
 
-        <span className="text-gray-600">
+        <span className="text-muted-foreground">
           Inteira {formatPriceBRL(session.full_price)} · Meia{' '}
           {formatPriceBRL(session.half_price)}
         </span>
 
-        <span className="rounded bg-gray-100 px-2 py-0.5 text-xs">
+        <Badge variant={SESSION_STATUS_BADGE_VARIANT[session.status]}>
           {SESSION_STATUS_LABELS[session.status]}
-        </span>
-
-        <span className="text-gray-600">
-          Vendidos: {session.tickets_sold}
-        </span>
+        </Badge>
       </div>
 
-      <div className="flex gap-2">
-        <button
+      <div className="flex shrink-0 gap-2">
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
+          className="min-h-11"
           onClick={onEdit}
-          className="min-h-11 rounded-md border border-gray-300 px-3 text-sm"
         >
           Editar
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
+          className="min-h-11 border-amber-300 text-amber-800 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/40"
           onClick={onCancel}
           disabled={!canCancel}
           title={
@@ -70,13 +86,15 @@ export function SessionRow({
               ? undefined
               : 'Só sessões à venda podem ser canceladas'
           }
-          className="min-h-11 rounded-md border border-amber-300 px-3 text-sm text-amber-800 disabled:opacity-40"
         >
-          Cancelar sessão
-        </button>
+          Cancelar
+        </Button>
 
-        <button
+        <Button
           type="button"
+          variant="destructive"
+          size="sm"
+          className="min-h-11"
           onClick={onDelete}
           disabled={!session.can_delete}
           title={
@@ -84,10 +102,9 @@ export function SessionRow({
               ? undefined
               : 'Sessão com ingressos vendidos não pode ser excluída — cancele em vez disso'
           }
-          className="min-h-11 rounded-md border border-red-300 px-3 text-sm text-red-700 disabled:opacity-40"
         >
           Excluir
-        </button>
+        </Button>
       </div>
     </li>
   );
