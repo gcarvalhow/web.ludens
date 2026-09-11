@@ -17,13 +17,15 @@
     "jsx": "preserve",
     "incremental": true,
     "plugins": [{ "name": "next" }],
-    "paths": {
-      "@web/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@catalog/*": ["./src/features/catalog/*"],
-      "@booking/*": ["./src/features/booking/*"],
-      "@checkout/*": ["./src/features/checkout/*"],
-      "@account/*": ["./src/features/account/*"]
+      "paths": {
+          "@web/*": ["./src/*"],
+          "@components/*": ["./src/components/*"],
+          "@catalog": ["./src/features/catalog/index.ts"],
+          "@catalog/*": ["./src/features/catalog/*"],
+          "@booking/*": ["./src/features/booking/*"],
+          "@checkout/*": ["./src/features/checkout/*"],
+          "@account": ["./src/features/account/index.ts"],
+          "@account/*": ["./src/features/account/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
