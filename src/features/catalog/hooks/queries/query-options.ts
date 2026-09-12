@@ -15,7 +15,22 @@ export const catalogQueryKeys = {
     ] as const,
 
   genres: () =>
-    [...catalogQueryKeys.all, 'genres'] as const,
+  [...catalogQueryKeys.all, 'genres'] as const,
+
+showDetail: (showId: string) =>
+  [
+    ...catalogQueryKeys.all,
+    'show',
+    showId,
+  ] as const,
+
+sessionDetail: (sessionId: string) =>
+  [
+    ...catalogQueryKeys.all,
+    'session',
+    sessionId,
+  ] as const,
+
 
   admin: {
     shows: () =>
@@ -56,6 +71,23 @@ export const catalogQueryOptions = {
         catalogService.fetchGenres(),
       staleTime: 60_000,
     }),
+    showDetail: (showId: string) =>
+  queryOptions({
+    queryKey:
+      catalogQueryKeys.showDetail(showId),
+    queryFn: () =>
+      catalogService.fetchShowById(showId),
+  }),
+
+sessionDetail: (sessionId: string) =>
+  queryOptions({
+    queryKey:
+      catalogQueryKeys.sessionDetail(sessionId),
+    queryFn: () =>
+      catalogService.fetchSessionById(sessionId),
+    refetchInterval: 15_000,
+    staleTime: 5_000,
+  }),
 
   adminShowList: () =>
     queryOptions({
