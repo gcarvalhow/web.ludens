@@ -7,7 +7,9 @@ import type {
   AdminShowSummary,
   GenreList,
   PagedShows,
+  SessionDetail,
   SessionFormValues,
+  ShowDetail,
   ShowFormValues,
 } from '@catalog/server/types';
 
@@ -88,6 +90,38 @@ export const catalogService = {
       },
     );
   },
+  async fetchShowById(id: string) {
+  const show = await fetcher<ShowDetail>(
+    endpoints.catalog.showById(id),
+    {
+      method: 'GET',
+      skipAuth: true,
+    },
+  );
+
+  return {
+    ...show,
+    sessions: show.sessions.map((session) => ({
+      ...session,
+      starts_at: new Date(session.starts_at),
+    })),
+  };
+},
+
+async fetchSessionById(id: string) {
+  const session = await fetcher<SessionDetail>(
+    endpoints.catalog.sessionById(id),
+    {
+      method: 'GET',
+      skipAuth: true,
+    },
+  );
+
+  return {
+    ...session,
+    starts_at: new Date(session.starts_at),
+  };
+},
 
   // GET /admin/shows — listagem resumida, sem sessions (api.ludens#21).
   async listAdminShows() {
