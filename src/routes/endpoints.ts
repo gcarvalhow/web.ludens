@@ -19,9 +19,11 @@ export const endpoints = {
     byId: (id: string) => `${USERS_BASE}/${id}`,
   },
 
-  catalog: {
+    catalog: {
     shows: '/shows',
+    showById: (id: string) => `/shows/${id}`,
     genres: '/genres',
+    sessionById: (id: string) => `/sessions/${id}`,
 
     admin: {
       shows: {

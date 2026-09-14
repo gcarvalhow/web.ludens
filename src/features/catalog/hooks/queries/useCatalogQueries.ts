@@ -20,6 +20,18 @@ export function useGenreList() {
   );
 }
 
+export function useShowDetail(showId: string) {
+  return useQuery(
+    catalogQueryOptions.showDetail(showId),
+  );
+}
+
+export function useSessionDetail(sessionId: string) {
+  return useQuery(
+    catalogQueryOptions.sessionDetail(sessionId),
+  );
+}
+
 export function useAdminShowList() {
   return useQuery(
     catalogQueryOptions.adminShowList(),
