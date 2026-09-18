@@ -30,6 +30,7 @@ export const adminShowSummarySchema = z.object({
   title: z.string(),
   synopsis: z.string(),
   image_url: z.string(),
+  genre_id: z.string().uuid(),
   genre: z.string(),
   status: showStatusEnum,
 });
@@ -56,10 +57,9 @@ export const showFormSchema = z.object({
     .min(1, 'Informe a sinopse')
     .max(5000),
 
-  genre: z
+  genre_id: z
     .string()
-    .min(1, 'Informe a categoria')
-    .max(80),
+    .uuid('Selecione um gênero'),
 });
 
 export const sessionFormSchema = z.object({

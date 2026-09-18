@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { Sparkles } from 'lucide-react';
 import type { FormEventHandler } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
@@ -14,7 +16,16 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select';
 import { Textarea } from '@components/ui/textarea';
+
+import { useGenreList } from '@catalog/hooks/queries';
 
 import type { ShowFormValues } from '@catalog/server/types';
 
@@ -33,6 +44,9 @@ export function ShowForm({
   isPending,
   mode,
 }: ShowFormProps) {
+  const genresQuery = useGenreList();
+  const genres = genresQuery.data ?? [];
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="flex flex-col gap-5">
@@ -84,18 +98,46 @@ export function ShowForm({
 
         <FormField
           control={form.control}
-          name="genre"
+          name="genre_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Categoria / gênero</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex.: Drama, Comédia, Infantil"
-                  disabled={isPending}
-                  className="min-h-11"
-                  {...field}
-                />
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={isPending || genres.length === 0}
+                >
+                  <SelectTrigger className="min-h-11 w-full">
+                    <SelectValue placeholder="Selecione um gênero" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {genres.map((genre) => (
+                      <SelectItem
+                        key={genre.id}
+                        value={genre.id}
+                      >
+                        {genre.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
+
+              {!genresQuery.isLoading && genres.length === 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  Nenhum gênero cadastrado —{' '}
+                  <Link
+                    href="/admin/generos"
+                    className="underline underline-offset-2"
+                  >
+                    crie um primeiro
+                  </Link>
+                  .
+                </p>
+              ) : null}
+
               <FormMessage />
             </FormItem>
           )}

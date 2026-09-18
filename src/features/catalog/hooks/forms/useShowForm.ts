@@ -15,7 +15,7 @@ import type {
 const EMPTY: ShowFormValues = {
   title: '',
   synopsis: '',
-  genre: '',
+  genre_id: '',
 };
 
 export function useShowForm(
@@ -32,7 +32,7 @@ export function useShowForm(
       form.reset({
         title: editing.title,
         synopsis: editing.synopsis,
-        genre: editing.genre,
+        genre_id: editing.genre_id,
       });
     } else {
       form.reset(EMPTY);

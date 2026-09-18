@@ -5,6 +5,8 @@ import type {
   AdminSession,
   AdminShow,
   AdminShowSummary,
+  Genre,
+  GenreFormValues,
   GenreList,
   PagedShows,
   SessionDetail,
@@ -112,6 +114,36 @@ export const catalogService = {
       },
     );
   },
+
+  createGenre(values: GenreFormValues) {
+    return fetcher<Genre>(
+      endpoints.catalog.genres,
+      {
+        method: 'POST',
+        body: JSON.stringify(values),
+      },
+    );
+  },
+
+  updateGenre(id: string, values: GenreFormValues) {
+    return fetcher<Genre>(
+      endpoints.catalog.genreById(id),
+      {
+        method: 'PUT',
+        body: JSON.stringify(values),
+      },
+    );
+  },
+
+  deleteGenre(id: string) {
+    return fetcher<void>(
+      endpoints.catalog.genreById(id),
+      {
+        method: 'DELETE',
+      },
+    );
+  },
+
   async fetchShowById(id: string) {
   const show = await fetcher<ShowDetail>(
     endpoints.catalog.showById(id),

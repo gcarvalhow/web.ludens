@@ -1,6 +1,8 @@
 'use client';
 
-import { Drama, Plus, RotateCw, TriangleAlert } from 'lucide-react';
+import Link from 'next/link';
+
+import { Drama, Plus, RotateCw, Tags, TriangleAlert } from 'lucide-react';
 import { useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
@@ -193,18 +195,32 @@ export function AdminCatalogManager() {
           </div>
         </div>
 
-        <Button
-          type="button"
-          className="min-h-11 px-4"
-          onClick={() =>
-            setShowPanel({
-              mode: 'create',
-            })
-          }
-        >
-          <Plus />
-          Novo espetáculo
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 px-4"
+            asChild
+          >
+            <Link href="/admin/generos">
+              <Tags />
+              Gerenciar gêneros
+            </Link>
+          </Button>
+
+          <Button
+            type="button"
+            className="min-h-11 px-4"
+            onClick={() =>
+              setShowPanel({
+                mode: 'create',
+              })
+            }
+          >
+            <Plus />
+            Novo espetáculo
+          </Button>
+        </div>
       </div>
 
       {query.isLoading ? <CatalogLoadingState /> : null}
