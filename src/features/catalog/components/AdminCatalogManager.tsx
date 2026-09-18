@@ -136,6 +136,7 @@ export function AdminCatalogManager() {
         updateSessionMutation.mutate(
           {
             id: sessionPanel.session.id,
+            showId: sessionPanel.showId,
             values,
           },
           {

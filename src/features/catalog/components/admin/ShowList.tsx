@@ -54,10 +54,11 @@ export function ShowList({
   onCancelSession,
   onDeleteSession,
 }: ShowListProps) {
-  // A listagem só traz dados principais (GET /admin/shows, resumo, sem
-  // sessions) — as sessões de um espetáculo específico só são buscadas
-  // (GET /admin/shows/{id}) quando o admin entra nele, expandindo o card.
-  // Mesmo padrão de navegação lista→detalhe do catálogo público.
+  // A listagem só traz dados principais (GET /catalog/shows/, resumo,
+  // sem sessions) — as sessões de um espetáculo específico só são
+  // buscadas (GET /catalog/shows/{id}) quando o admin entra nele,
+  // expandindo o card. Mesmo padrão de navegação lista→detalhe do
+  // catálogo público (mesmos endpoints, resposta varia pelo token).
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (

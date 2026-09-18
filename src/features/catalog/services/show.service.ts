@@ -30,7 +30,8 @@ function buildQuery(filters: ShowFilterParams): string {
   }
 
   if (filters.genre) {
-    params.set('genre', filters.genre);
+    // Contrato real é genre_id (UUID) — GET /catalog/shows/, show_router.py.
+    params.set('genre_id', filters.genre);
   }
 
   params.set('page', String(filters.page ?? 1));
@@ -40,9 +41,14 @@ function buildQuery(filters: ShowFilterParams): string {
 }
 
 // O <input type="datetime-local"> devolve hora local sem fuso;
-// o backend exige ISO 8601 com offset.
-function toSessionPayload(values: SessionFormValues) {
+// o backend exige ISO 8601 com offset. show_id vai no corpo (SessionRequest)
+// — não existe mais rota aninhada /shows/{id}/sessions.
+function toSessionPayload(
+  showId: string,
+  values: SessionFormValues,
+) {
   return {
+    show_id: showId,
     starts_at: new Date(
       values.starts_at,
     ).toISOString(),
@@ -123,21 +129,26 @@ async fetchSessionById(id: string) {
   };
 },
 
-  // GET /admin/shows — listagem resumida, sem sessions (api.ludens#21).
+  // GET /catalog/shows/ — mesma busca pública, mas o backend devolve
+  // Page<AdminShowSummaryResponse> (resumo, sem sessions) quando o
+  // token é de admin. Sem paginação na UI ainda, então busca no
+  // tamanho máximo permitido pelo endpoint (48).
   async listAdminShows() {
-    return fetcher<AdminShowSummary[]>(
-      endpoints.catalog.admin.shows.list,
-      {
-        method: 'GET',
-      },
-    );
+    const page = await fetcher<{
+      items: AdminShowSummary[];
+    }>(`${endpoints.catalog.shows}?size=48`, {
+      method: 'GET',
+    });
+
+    return page.items;
   },
 
-  // GET /admin/shows/{id} — detalhe completo, com sessions (todas —
+  // GET /catalog/shows/{id} — mesmo endpoint da vitrine pública; com
+  // token de admin devolve o detalhe completo, com sessions (todas —
   // passadas, canceladas e futuras, sem filtro).
   async getAdminShow(id: string) {
     const show = await fetcher<AdminShow>(
-      endpoints.catalog.admin.shows.byId(id),
+      endpoints.catalog.showById(id),
       {
         method: 'GET',
       },
@@ -148,7 +159,7 @@ async fetchSessionById(id: string) {
 
   async createShow(values: ShowFormValues) {
     const show = await fetcher<AdminShow>(
-      endpoints.catalog.admin.shows.create,
+      endpoints.catalog.shows,
       {
         method: 'POST',
         body: JSON.stringify(values),
@@ -163,7 +174,7 @@ async fetchSessionById(id: string) {
     values: ShowFormValues,
   ) {
     const show = await fetcher<AdminShow>(
-      endpoints.catalog.admin.shows.byId(id),
+      endpoints.catalog.showById(id),
       {
         method: 'PUT',
         body: JSON.stringify(values),
@@ -175,7 +186,7 @@ async fetchSessionById(id: string) {
 
   publishShow(id: string) {
     return fetcher<void>(
-      endpoints.catalog.admin.shows.publish(id),
+      endpoints.catalog.showPublish(id),
       {
         method: 'POST',
       },
@@ -184,7 +195,7 @@ async fetchSessionById(id: string) {
 
   unpublishShow(id: string) {
     return fetcher<void>(
-      endpoints.catalog.admin.shows.unpublish(id),
+      endpoints.catalog.showUnpublish(id),
       {
         method: 'POST',
       },
@@ -193,7 +204,7 @@ async fetchSessionById(id: string) {
 
   deleteShow(id: string) {
     return fetcher<void>(
-      endpoints.catalog.admin.shows.byId(id),
+      endpoints.catalog.showById(id),
       {
         method: 'DELETE',
       },
@@ -205,13 +216,11 @@ async fetchSessionById(id: string) {
     values: SessionFormValues,
   ) {
     const session = await fetcher<AdminSession>(
-      endpoints.catalog.admin.shows.sessions(
-        showId,
-      ),
+      endpoints.catalog.sessions,
       {
         method: 'POST',
         body: JSON.stringify(
-          toSessionPayload(values),
+          toSessionPayload(showId, values),
         ),
       },
     );
@@ -219,18 +228,20 @@ async fetchSessionById(id: string) {
     return reviveSession(session);
   },
 
+  // PUT /catalog/sessions/{id} exige show_id no corpo mesmo em edição
+  // (o backend ignora o valor, mas o campo é obrigatório) — por isso
+  // recebe showId aqui também.
   async updateSession(
     sessionId: string,
+    showId: string,
     values: SessionFormValues,
   ) {
     const session = await fetcher<AdminSession>(
-      endpoints.catalog.admin.sessions.byId(
-        sessionId,
-      ),
+      endpoints.catalog.sessionById(sessionId),
       {
         method: 'PUT',
         body: JSON.stringify(
-          toSessionPayload(values),
+          toSessionPayload(showId, values),
         ),
       },
     );
@@ -240,7 +251,7 @@ async fetchSessionById(id: string) {
 
   cancelSession(sessionId: string) {
     return fetcher<void>(
-      endpoints.catalog.admin.sessions.cancel(
+      endpoints.catalog.sessionCancel(
         sessionId,
       ),
       {
@@ -251,7 +262,7 @@ async fetchSessionById(id: string) {
 
   deleteSession(sessionId: string) {
     return fetcher<void>(
-      endpoints.catalog.admin.sessions.byId(
+      endpoints.catalog.sessionById(
         sessionId,
       ),
       {

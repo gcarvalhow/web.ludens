@@ -34,9 +34,10 @@ export const adminShowSummarySchema = z.object({
   status: showStatusEnum,
 });
 
-// GET /admin/shows/{id}, POST e PUT — detalhe completo, com sessions.
-// GET /admin/shows (lista) devolve só o resumo acima, sem sessions —
-// ver issue api.ludens#21 / PR #23.
+// GET /catalog/shows/{id} (com token admin), POST e PUT — detalhe
+// completo, com sessions. GET /catalog/shows/ (lista/busca, mesmo
+// endpoint do público) devolve só o resumo acima, sem sessions —
+// ver api.ludens#45/#47 (unificação admin/público).
 export const adminShowSchema = adminShowSummarySchema.extend({
   sessions: z.array(adminSessionSchema),
 });

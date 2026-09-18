@@ -165,13 +165,16 @@ export function useAdminCatalogMutations() {
   const updateSessionMutation = useMutation({
     mutationFn: ({
       id,
+      showId,
       values,
     }: {
       id: string;
+      showId: string;
       values: SessionFormValues;
     }) =>
       catalogService.updateSession(
         id,
+        showId,
         values,
       ),
 
