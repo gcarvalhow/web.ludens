@@ -1,5 +1,15 @@
 'use client';
 
+import { Drama, RotateCw } from 'lucide-react';
+
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@components/ui/alert';
+import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
+
 import {
   Pagination,
   ShowCard,
@@ -9,37 +19,78 @@ import { useShowList } from '@catalog/hooks/queries';
 
 import { ShowFilters } from './ShowFilters';
 
+function ShowGridLoadingState() {
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      {[0, 1, 2, 3].map((key) => (
+        <div key={key} className="flex flex-col gap-2">
+          <Skeleton className="aspect-[3/4] w-full rounded-xl" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function ShowGrid() {
   const { filters, setFilters } = useShowFilters();
   const query = useShowList(filters);
 
   return (
     <section className="mx-auto max-w-5xl space-y-6 p-6">
+      <div className="flex items-center gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <Drama className="size-5" />
+        </span>
+
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+            Espetáculos em cartaz
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Encontre a próxima sessão do seu espetáculo favorito.
+          </p>
+        </div>
+      </div>
+
       <ShowFilters />
 
       {query.isLoading ? (
-        <p className="text-sm text-gray-500">
-          Carregando espetáculos...
-        </p>
+        <ShowGridLoadingState />
       ) : query.isError ? (
-        <div className="text-sm">
-          <p className="text-red-600">
-            Não foi possível carregar os espetáculos.
-          </p>
+        <Alert variant="destructive">
+          <AlertTitle>
+            Não foi possível carregar os espetáculos
+          </AlertTitle>
+          <AlertDescription className="flex flex-col gap-3">
+            <span>
+              Verifique sua conexão e tente novamente.
+            </span>
 
-          <button
-            type="button"
-            onClick={() => void query.refetch()}
-            className="mt-2 min-h-11 rounded-md border border-gray-300 px-4"
-          >
-            Tentar de novo
-          </button>
-        </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="min-h-11 w-fit"
+              onClick={() => void query.refetch()}
+            >
+              <RotateCw />
+              Tentar de novo
+            </Button>
+          </AlertDescription>
+        </Alert>
       ) : query.data &&
         query.data.items.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
-          Nenhum espetáculo em cartaz para esse filtro.
-        </p>
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
+          <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Drama className="size-6" />
+          </span>
+
+          <p className="text-sm text-muted-foreground">
+            Nenhum espetáculo em cartaz para esse filtro.
+          </p>
+        </div>
       ) : query.data ? (
         <>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
