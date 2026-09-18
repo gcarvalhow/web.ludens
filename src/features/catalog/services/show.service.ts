@@ -24,13 +24,13 @@ function buildQuery(filters: ShowFilterParams): string {
   const params = new URLSearchParams();
 
   if (filters.fromDate) {
-    // Contrato real é snake_case (from_date) — GET /shows, show_router.py.
+    // Contrato real é snake_case (from_date) — GET /catalog/shows, show_router.py.
     // `fromDate` (camelCase) é só o nome interno do filtro no frontend/URL.
     params.set('from_date', filters.fromDate);
   }
 
   if (filters.genre) {
-    // Contrato real é genre_id (UUID) — GET /catalog/shows/, show_router.py.
+    // Contrato real é genre_id (UUID) — GET /catalog/shows, show_router.py.
     params.set('genre_id', filters.genre);
   }
 
@@ -129,7 +129,7 @@ async fetchSessionById(id: string) {
   };
 },
 
-  // GET /catalog/shows/ — mesma busca pública, mas o backend devolve
+  // GET /catalog/shows — mesma busca pública, mas o backend devolve
   // Page<AdminShowSummaryResponse> (resumo, sem sessions) quando o
   // token é de admin. Sem paginação na UI ainda, então busca no
   // tamanho máximo permitido pelo endpoint (48).

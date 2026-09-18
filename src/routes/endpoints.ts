@@ -1,15 +1,18 @@
 const API_BASE = '/api';
 const IDENTITY_BASE = `${API_BASE}/identity`;
+// api.ludens (#56) moveu auth_router pra baixo de /identity/authentication
+// pra não colidir com o prefixo de user_router (/identity/users).
+const AUTH_BASE = `${IDENTITY_BASE}/authentication`;
 const CATALOG_BASE = `${API_BASE}/catalog`;
 
 export const endpoints = {
   auth: {
-    login: `${IDENTITY_BASE}/login`,
-    refresh: `${IDENTITY_BASE}/refresh`,
-    logout: `${IDENTITY_BASE}/logout`,
-    changePassword: `${IDENTITY_BASE}/password/change`,
-    passwordForgot: `${IDENTITY_BASE}/password/forgot`,
-    passwordReset: `${IDENTITY_BASE}/password/reset`,
+    login: `${AUTH_BASE}/login`,
+    refresh: `${AUTH_BASE}/refresh`,
+    logout: `${AUTH_BASE}/logout`,
+    changePassword: `${AUTH_BASE}/password/change`,
+    passwordForgot: `${AUTH_BASE}/password/forgot`,
+    passwordReset: `${AUTH_BASE}/password/reset`,
   },
 
   users: {
@@ -22,7 +25,9 @@ export const endpoints = {
   // um namespace /admin separado — é a mesma URL pra público e admin,
   // o backend decide o formato da resposta pelo token do usuário.
   catalog: {
-    shows: `${CATALOG_BASE}/shows/`,
+    // show_router (#56) trocou de rotas inline "/shows/" pra prefix
+    // "/catalog/shows" + path "" — a listagem/criação perdeu a barra final.
+    shows: `${CATALOG_BASE}/shows`,
     showById: (id: string) => `${CATALOG_BASE}/shows/${id}`,
     showPublish: (id: string) =>
       `${CATALOG_BASE}/shows/${id}/publish`,

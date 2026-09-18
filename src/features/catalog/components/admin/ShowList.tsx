@@ -54,7 +54,7 @@ export function ShowList({
   onCancelSession,
   onDeleteSession,
 }: ShowListProps) {
-  // A listagem só traz dados principais (GET /catalog/shows/, resumo,
+  // A listagem só traz dados principais (GET /catalog/shows, resumo,
   // sem sessions) — as sessões de um espetáculo específico só são
   // buscadas (GET /catalog/shows/{id}) quando o admin entra nele,
   // expandindo o card. Mesmo padrão de navegação lista→detalhe do

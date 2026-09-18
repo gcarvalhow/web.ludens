@@ -31,32 +31,32 @@ describe('authService', () => {
     });
   });
 
-  it('login bate em POST /api/identity/login, sem auth', async () => {
+  it('login bate em POST /api/identity/authentication/login, sem auth', async () => {
     const payload = { email: 'maria@example.com', password: 'senha1234' };
 
     await authService.login(payload);
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/login', {
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/login', {
       method: 'POST',
       body: JSON.stringify(payload),
       skipAuth: true,
     });
   });
 
-  it('refresh bate em POST /api/identity/refresh, sem auth e sem tentar refresh de novo', async () => {
+  it('refresh bate em POST /api/identity/authentication/refresh, sem auth e sem tentar refresh de novo', async () => {
     await authService.refresh();
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/refresh', {
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/refresh', {
       method: 'POST',
       skipAuth: true,
       skipRefresh: true,
     });
   });
 
-  it('logout bate em POST /api/identity/logout, autenticado', async () => {
+  it('logout bate em POST /api/identity/authentication/logout, autenticado', async () => {
     await authService.logout();
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/logout', { method: 'POST' });
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/logout', { method: 'POST' });
   });
 
   it('fetchUserById bate em GET /api/identity/users/{id}', async () => {
@@ -65,35 +65,35 @@ describe('authService', () => {
     expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/users/abc-123', { method: 'GET' });
   });
 
-  it('changePassword bate em POST /api/identity/password/change, autenticado', async () => {
+  it('changePassword bate em POST /api/identity/authentication/password/change, autenticado', async () => {
     const payload = { current_password: 'atual123', new_password: 'nova12345' };
 
     await authService.changePassword(payload);
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/password/change', {
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/password/change', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
   });
 
-  it('forgotPassword bate em POST /api/identity/password/forgot, sem auth', async () => {
+  it('forgotPassword bate em POST /api/identity/authentication/password/forgot, sem auth', async () => {
     const payload = { email: 'maria@example.com' };
 
     await authService.forgotPassword(payload);
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/password/forgot', {
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/password/forgot', {
       method: 'POST',
       body: JSON.stringify(payload),
       skipAuth: true,
     });
   });
 
-  it('resetPassword bate em POST /api/identity/password/reset, sem auth', async () => {
+  it('resetPassword bate em POST /api/identity/authentication/password/reset, sem auth', async () => {
     const payload = { token: 'tok', password: 'senha1234' };
 
     await authService.resetPassword(payload);
 
-    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/password/reset', {
+    expect(mockedFetcher).toHaveBeenCalledWith('/api/identity/authentication/password/reset', {
       method: 'POST',
       body: JSON.stringify(payload),
       skipAuth: true,
