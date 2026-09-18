@@ -9,6 +9,7 @@ import type {
   PagedShows,
   SessionDetail,
   SessionFormValues,
+  ShowCardModel,
   ShowDetail,
   ShowFormValues,
 } from '@catalog/server/types';
@@ -76,15 +77,30 @@ function reviveShow(show: AdminShow): AdminShow {
   };
 }
 
+// Mesmo motivo do reviveSession/reviveShow: o fetcher não valida em
+// runtime, então upcoming_dates chega como string[] apesar do tipo
+// dizer Date[] (via z.coerce.date()).
+function reviveShowCard(show: ShowCardModel): ShowCardModel {
+  return {
+    ...show,
+    upcoming_dates: show.upcoming_dates.map((date) => new Date(date)),
+  };
+}
+
 export const catalogService = {
-  fetchShows(filters: ShowFilterParams = {}) {
-    return fetcher<PagedShows>(
+  async fetchShows(filters: ShowFilterParams = {}) {
+    const page = await fetcher<PagedShows>(
       `${endpoints.catalog.shows}?${buildQuery(filters)}`,
       {
         method: 'GET',
         skipAuth: true,
       },
     );
+
+    return {
+      ...page,
+      items: page.items.map(reviveShowCard),
+    };
   },
 
   fetchGenres() {
