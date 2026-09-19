@@ -109,6 +109,11 @@ export function SessionForm({
                     disabled={isPending}
                     className="min-h-11"
                     {...field}
+                    value={
+                      Number.isNaN(field.value)
+                        ? ''
+                        : field.value
+                    }
                     onChange={(event) =>
                       field.onChange(event.target.valueAsNumber)
                     }
@@ -133,6 +138,11 @@ export function SessionForm({
                     disabled={isPending}
                     className="min-h-11"
                     {...field}
+                    value={
+                      Number.isNaN(field.value)
+                        ? ''
+                        : field.value
+                    }
                     onChange={(event) =>
                       field.onChange(event.target.valueAsNumber)
                     }
