@@ -80,7 +80,7 @@ export function AdminHub() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2.5">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#fae9e9] p-2.5">
           <LogoIcon className="size-full" />
         </span>
 
