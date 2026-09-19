@@ -1,5 +1,11 @@
 # web.ludens
 
+> *Plataforma de Venda de Ingressos para Teatro Comunitário*
+
+<p align="center">
+  <img src=".github/assets/banner.svg" alt="ludens" width="720">
+</p>
+
 Frontend da plataforma **Ludens** — a aplicação web onde o comprador descobre
 espetáculos, reserva assentos, paga por Pix e acompanha as compras, e o admin do
 teatro gerencia espetáculos e sessões.
