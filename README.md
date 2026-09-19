@@ -1,7 +1,5 @@
 # web.ludens
 
-> *Plataforma de Venda de Ingressos para Teatro Comunitário*
-
 <p align="center">
   <img src=".github/assets/banner.svg" alt="ludens" width="720">
 </p>
