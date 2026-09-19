@@ -1,5 +1,7 @@
 'use client';
 
+import { CalendarDays, Tags } from 'lucide-react';
+
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -22,7 +24,11 @@ export function ShowFilters() {
   return (
     <div className="flex flex-wrap items-end gap-4">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="filter-from-date">
+        <Label
+          htmlFor="filter-from-date"
+          className="gap-1.5"
+        >
+          <CalendarDays className="size-3.5 text-primary" />
           A partir de
         </Label>
 
@@ -36,12 +42,18 @@ export function ShowFilters() {
                 event.target.value || undefined,
             })
           }
-          className="min-h-11"
+          className="min-h-11 border-primary/30"
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="filter-genre">Gênero</Label>
+        <Label
+          htmlFor="filter-genre"
+          className="gap-1.5"
+        >
+          <Tags className="size-3.5 text-primary" />
+          Gênero
+        </Label>
 
         <Select
           value={filters.genre ?? ALL_GENRES}
@@ -56,7 +68,7 @@ export function ShowFilters() {
         >
           <SelectTrigger
             id="filter-genre"
-            className="min-h-11 w-40"
+            className="min-h-11 w-40 border-primary/30"
           >
             <SelectValue />
           </SelectTrigger>

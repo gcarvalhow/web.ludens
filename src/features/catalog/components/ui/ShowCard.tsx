@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import { CalendarDays } from 'lucide-react';
+
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent } from '@components/ui/card';
 
@@ -27,7 +29,7 @@ export function ShowCard({ show }: ShowCardProps) {
       href={`/espetaculos/${show.id}`}
       className="block"
     >
-      <Card className="h-full gap-3 transition hover:shadow-md">
+      <Card className="h-full gap-3 border-t-2 border-t-primary/70 transition hover:shadow-md">
         <img
           src={show.image_url}
           alt={show.title}
@@ -40,7 +42,10 @@ export function ShowCard({ show }: ShowCardProps) {
               {show.title}
             </h3>
 
-            <Badge variant="outline" className="shrink-0">
+            <Badge
+              variant="outline"
+              className="shrink-0 border-primary/40 text-primary"
+            >
               {show.genre}
             </Badge>
           </div>
@@ -49,7 +54,8 @@ export function ShowCard({ show }: ShowCardProps) {
             {show.synopsis_short}
           </p>
 
-          <p className="text-xs text-muted-foreground">
+          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <CalendarDays className="size-3.5 text-primary" />
             {show.upcoming_dates
               .slice(0, 3)
               .map((date) => SHORT_DATE.format(date))

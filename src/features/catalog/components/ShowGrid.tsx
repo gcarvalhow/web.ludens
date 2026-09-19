@@ -40,7 +40,7 @@ export function ShowGrid() {
 
   return (
     <section className="mx-auto max-w-5xl space-y-6 p-6">
-      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-6 sm:p-8">
+      <div className="flex items-center gap-3 rounded-2xl border border-border border-b-2 border-b-primary bg-card p-6 sm:p-8">
         <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2.5">
           <TheaterMasksIcon className="size-full" />
         </span>
