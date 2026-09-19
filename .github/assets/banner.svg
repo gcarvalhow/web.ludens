@@ -1,32 +1,21 @@
-<svg width="1200" height="380" viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg">
+<svg width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a0303"/>
-      <stop offset="55%" stop-color="#2b0707"/>
-      <stop offset="100%" stop-color="#170202"/>
-    </linearGradient>
-    <radialGradient id="spot" cx="50%" cy="38%" r="65%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.03"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+    <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
     </pattern>
-    <clipPath id="clip">
-      <rect width="1200" height="380"/>
+    <clipPath id="card">
+      <rect x="490" y="50" width="220" height="220" rx="32" ry="32"/>
     </clipPath>
   </defs>
 
-  <g clip-path="url(#clip)">
-    <rect width="1200" height="380" fill="url(#bg)"/>
-    <rect width="1200" height="380" fill="url(#grid)"/>
-    <rect width="1200" height="380" fill="url(#spot)"/>
+  <rect width="1200" height="420" fill="#000000"/>
+  <rect width="1200" height="420" fill="url(#grid)"/>
+
+  <rect x="490" y="50" width="220" height="220" rx="32" ry="32" fill="#fae9e9"/>
+  <g clip-path="url(#card)">
+    <image href="logo.png" x="529" y="70" width="141" height="160"/>
   </g>
 
-  <g transform="translate(525, 40)">
-    <image href="logo.png" x="0" y="0" width="150" height="170"/>
-  </g>
-  <text x="600" y="280" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="72" fill="#ffffff">ludens</text>
-  <text x="600" y="322" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="24" letter-spacing="0.3" fill="#ffffff" fill-opacity="0.78">Plataforma de Venda de Ingressos para Teatro Comunitário</text>
+  <text x="600" y="335" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="64" fill="#ffffff">ludens</text>
+  <text x="600" y="373" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="24" letter-spacing="0.3" fill="#ffffff" fill-opacity="0.78">Plataforma de Venda de Ingressos para Teatro Comunitário</text>
 </svg>
