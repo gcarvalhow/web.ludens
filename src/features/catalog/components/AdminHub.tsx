@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {
   Armchair,
   ChevronRight,
+  Drama,
   Lock,
   Tags,
   Ticket,
@@ -18,7 +19,7 @@ interface HubOption {
   href?: string;
   title: string;
   description: string;
-  icon: 'masks' | 'tags' | 'seats' | 'sales';
+  icon: 'shows' | 'tags' | 'seats' | 'sales';
 }
 
 const OPTIONS: HubOption[] = [
@@ -27,7 +28,7 @@ const OPTIONS: HubOption[] = [
     title: 'Espetáculos e sessões',
     description:
       'Cadastre espetáculos, gerencie sessões e publique o catálogo.',
-    icon: 'masks',
+    icon: 'shows',
   },
   {
     href: '/admin/generos',
@@ -51,8 +52,8 @@ const OPTIONS: HubOption[] = [
 ];
 
 function OptionIcon({ icon }: { icon: HubOption['icon'] }) {
-  if (icon === 'masks') {
-    return <TheaterMasksIcon className="size-full" />;
+  if (icon === 'shows') {
+    return <Drama className="size-full" />;
   }
 
   if (icon === 'tags') {
