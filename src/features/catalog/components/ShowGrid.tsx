@@ -9,7 +9,7 @@ import {
 } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
-import { TheaterMasksIcon } from '@components/TheaterMasksIcon';
+import { LogoIcon } from '@components/LogoIcon';
 
 import {
   Pagination,
@@ -42,7 +42,7 @@ export function ShowGrid() {
     <section className="mx-auto max-w-5xl space-y-6 p-6">
       <div className="flex items-center gap-3 rounded-2xl border border-border border-b-2 border-b-primary bg-card p-6 sm:p-8">
         <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2.5">
-          <TheaterMasksIcon className="size-full" />
+          <LogoIcon className="size-full" />
         </span>
 
         <div>
@@ -85,7 +85,7 @@ export function ShowGrid() {
         query.data.items.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 p-2.5">
-            <TheaterMasksIcon className="size-full" />
+            <LogoIcon className="size-full" />
           </span>
 
           <p className="text-sm text-muted-foreground">

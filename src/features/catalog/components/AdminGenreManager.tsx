@@ -20,7 +20,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
-import { TheaterMasksIcon } from '@components/TheaterMasksIcon';
+import { LogoIcon } from '@components/LogoIcon';
 
 import {
   GenreForm,
@@ -84,7 +84,7 @@ export function AdminGenreManager() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2">
-            <TheaterMasksIcon className="size-full" />
+            <LogoIcon className="size-full" />
           </span>
 
           <div>
@@ -143,7 +143,7 @@ export function AdminGenreManager() {
         genres.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
             <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 p-2.5">
-              <TheaterMasksIcon className="size-full" />
+              <LogoIcon className="size-full" />
             </span>
 
             <div className="space-y-1">

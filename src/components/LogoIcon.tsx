@@ -1,15 +1,15 @@
 import { cn } from 'cn';
 
-interface TheaterMasksIconProps {
+interface LogoIconProps {
   className?: string;
 }
 
-export function TheaterMasksIcon({
+export function LogoIcon({
   className,
-}: TheaterMasksIconProps) {
+}: LogoIconProps) {
   return (
     <img
-      src="/images/theater-masks-icon.png"
+      src="/images/logo-icon.png"
       alt=""
       className={cn('object-contain', className)}
     />
