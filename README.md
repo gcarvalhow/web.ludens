@@ -1,7 +1,7 @@
 # web.ludens
 
 <p align="center">
-  <img src=".github/assets/banner.svg" alt="ludens" width="720">
+  <img src=".github/assets/logo.png" alt="ludens" width="180">
 
   <h3 align="center">ludens</h3>
 
