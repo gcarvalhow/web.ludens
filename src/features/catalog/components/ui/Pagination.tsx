@@ -1,3 +1,5 @@
+import { Button } from '@components/ui/button';
+
 interface PaginationProps {
   page: number;
   size: number;
@@ -22,27 +24,29 @@ export function Pagination({
 
   return (
     <div className="flex items-center justify-center gap-3">
-      <button
+      <Button
         type="button"
+        variant="outline"
+        className="min-h-11 px-3"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
-        className="min-h-11 rounded-md border border-gray-300 px-3 text-sm disabled:opacity-40"
       >
         Anterior
-      </button>
+      </Button>
 
-      <span className="text-sm text-gray-600">
+      <span className="text-sm text-muted-foreground">
         Página {page} de {totalPages}
       </span>
 
-      <button
+      <Button
         type="button"
+        variant="outline"
+        className="min-h-11 px-3"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
-        className="min-h-11 rounded-md border border-gray-300 px-3 text-sm disabled:opacity-40"
       >
         Próxima
-      </button>
+      </Button>
     </div>
   );
 }

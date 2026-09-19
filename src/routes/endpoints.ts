@@ -34,6 +34,7 @@ export const endpoints = {
     showUnpublish: (id: string) =>
       `${CATALOG_BASE}/shows/${id}/unpublish`,
     genres: `${CATALOG_BASE}/genres`,
+    genreById: (id: string) => `${CATALOG_BASE}/genres/${id}`,
     sessions: `${CATALOG_BASE}/sessions/`,
     sessionById: (id: string) => `${CATALOG_BASE}/sessions/${id}`,
     sessionCancel: (id: string) =>

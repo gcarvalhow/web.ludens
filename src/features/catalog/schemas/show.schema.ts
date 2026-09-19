@@ -5,6 +5,7 @@ export const showCardSchema = z.object({
   title: z.string(),
   synopsis_short: z.string(),
   image_url: z.string(),
+  genre_id: z.string().uuid(),
   genre: z.string(),
   upcoming_dates: z.array(z.coerce.date()),
   price_min: z.number(),
@@ -27,3 +28,10 @@ export const genreSchema = z.object({
 });
 
 export const genreListSchema = z.array(genreSchema);
+
+export const genreFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'Informe o nome')
+    .max(80),
+});

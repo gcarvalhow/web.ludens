@@ -1,6 +1,14 @@
 'use client';
 
-import { Drama, Plus, RotateCw, TriangleAlert } from 'lucide-react';
+import Link from 'next/link';
+
+import {
+  ArrowLeft,
+  Plus,
+  RotateCw,
+  Tags,
+  TriangleAlert,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
@@ -13,6 +21,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
+import { LogoIcon } from '@components/LogoIcon';
 
 import {
   SessionForm,
@@ -85,78 +94,23 @@ export function AdminCatalogManager() {
   const [cancelTarget, setCancelTarget] =
     useState<AdminSession | null>(null);
 
-  const showForm = useShowForm(
-    showPanel?.mode === 'edit'
-      ? showPanel.show
-      : null,
-  );
+  const showForm = useShowForm({
+    editing:
+      showPanel?.mode === 'edit'
+        ? showPanel.show
+        : null,
+    createShowMutation,
+    updateShowMutation,
+    onSuccess: () => setShowPanel(null),
+  });
 
-  const sessionForm = useSessionForm(
-    sessionPanel?.session ?? null,
-  );
-
-  const showPending =
-    createShowMutation.isPending ||
-    updateShowMutation.isPending;
-
-  const sessionPending =
-    createSessionMutation.isPending ||
-    updateSessionMutation.isPending;
-
-  const submitShow = showForm.handleSubmit(
-    (values) => {
-      if (showPanel?.mode === 'edit') {
-        updateShowMutation.mutate(
-          {
-            id: showPanel.show.id,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setShowPanel(null),
-          },
-        );
-      } else {
-        createShowMutation.mutate(
-          values,
-          {
-            onSuccess: () =>
-              setShowPanel(null),
-          },
-        );
-      }
-    },
-  );
-
-  const submitSession =
-    sessionForm.handleSubmit((values) => {
-      if (!sessionPanel) return;
-
-      if (sessionPanel.session) {
-        updateSessionMutation.mutate(
-          {
-            id: sessionPanel.session.id,
-            showId: sessionPanel.showId,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setSessionPanel(null),
-          },
-        );
-      } else {
-        createSessionMutation.mutate(
-          {
-            showId: sessionPanel.showId,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setSessionPanel(null),
-          },
-        );
-      }
-    });
+  const sessionForm = useSessionForm({
+    editing: sessionPanel?.session ?? null,
+    showId: sessionPanel?.showId ?? null,
+    createSessionMutation,
+    updateSessionMutation,
+    onSuccess: () => setSessionPanel(null),
+  });
 
   const confirmCancel = () => {
     if (!cancelTarget) return;
@@ -177,10 +131,18 @@ export function AdminCatalogManager() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 p-6">
+      <Link
+        href="/admin"
+        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="size-3.5" />
+        Painel administrativo
+      </Link>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Drama className="size-5" />
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#fae9e9] p-2">
+            <LogoIcon className="size-full" />
           </span>
 
           <div>
@@ -193,18 +155,32 @@ export function AdminCatalogManager() {
           </div>
         </div>
 
-        <Button
-          type="button"
-          className="min-h-11 px-4"
-          onClick={() =>
-            setShowPanel({
-              mode: 'create',
-            })
-          }
-        >
-          <Plus />
-          Novo espetáculo
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 px-4"
+            asChild
+          >
+            <Link href="/admin/generos">
+              <Tags />
+              Gerenciar gêneros
+            </Link>
+          </Button>
+
+          <Button
+            type="button"
+            className="min-h-11 px-4"
+            onClick={() =>
+              setShowPanel({
+                mode: 'create',
+              })
+            }
+          >
+            <Plus />
+            Novo espetáculo
+          </Button>
+        </div>
       </div>
 
       {query.isLoading ? <CatalogLoadingState /> : null}
@@ -235,8 +211,8 @@ export function AdminCatalogManager() {
       {!query.isLoading && !query.isError ? (
         shows.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Drama className="size-6" />
+            <span className="flex size-12 items-center justify-center rounded-full bg-[#fae9e9] p-2.5">
+              <LogoIcon className="size-full" />
             </span>
 
             <div className="space-y-1">
@@ -315,7 +291,7 @@ export function AdminCatalogManager() {
       <Dialog
         open={showPanel !== null}
         onOpenChange={(open) => {
-          if (!open && !showPending) setShowPanel(null);
+          if (!open && !showForm.isPending) setShowPanel(null);
         }}
       >
         <DialogContent>
@@ -332,10 +308,10 @@ export function AdminCatalogManager() {
           </DialogHeader>
 
           <ShowForm
-            form={showForm}
-            onSubmit={submitShow}
+            form={showForm.form}
+            onSubmit={showForm.handleSubmit}
             onCancel={() => setShowPanel(null)}
-            isPending={showPending}
+            isPending={showForm.isPending}
             mode={showPanel?.mode === 'edit' ? 'edit' : 'create'}
           />
         </DialogContent>
@@ -344,7 +320,7 @@ export function AdminCatalogManager() {
       <Dialog
         open={sessionPanel !== null}
         onOpenChange={(open) => {
-          if (!open && !sessionPending) setSessionPanel(null);
+          if (!open && !sessionForm.isPending) setSessionPanel(null);
         }}
       >
         <DialogContent>
@@ -359,10 +335,10 @@ export function AdminCatalogManager() {
           </DialogHeader>
 
           <SessionForm
-            form={sessionForm}
-            onSubmit={submitSession}
+            form={sessionForm.form}
+            onSubmit={sessionForm.handleSubmit}
             onCancel={() => setSessionPanel(null)}
-            isPending={sessionPending}
+            isPending={sessionForm.isPending}
             mode={
               sessionPanel?.session
                 ? 'edit'
