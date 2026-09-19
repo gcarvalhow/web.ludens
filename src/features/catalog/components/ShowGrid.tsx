@@ -39,18 +39,28 @@ export function ShowGrid() {
 
   return (
     <section className="mx-auto max-w-5xl space-y-6 p-6">
-      <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-          <Drama className="size-5" />
-        </span>
+      <div className="relative overflow-hidden rounded-2xl border border-border">
+        <img
+          src="/images/home-hero.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
 
-        <div>
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
-            Espetáculos em cartaz
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Encontre a próxima sessão do seu espetáculo favorito.
-          </p>
+        <div className="relative flex items-center gap-3 p-6 sm:p-8">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Drama className="size-6" />
+          </span>
+
+          <div>
+            {/* Cor fixa (não usa text-foreground/text-muted-foreground):
+                o fundo é sempre a imagem clara do hero, em qualquer tema. */}
+            <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
+              Espetáculos em cartaz
+            </h1>
+            <p className="text-sm text-neutral-600 sm:text-base">
+              Encontre a próxima sessão do seu espetáculo favorito.
+            </p>
+          </div>
         </div>
       </div>
 
