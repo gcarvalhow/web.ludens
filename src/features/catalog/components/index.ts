@@ -2,6 +2,8 @@ export * from './ui';
 export * from './admin';
 export * from './AdminCatalogManager';
 export * from './AdminGenreManager';
+export * from './AdminHub';
+export * from './AdminNavButton';
 export * from './RequireAdmin';
 export * from './ShowFilters';
 export * from './ShowGrid';

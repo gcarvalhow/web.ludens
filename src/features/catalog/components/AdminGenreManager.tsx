@@ -73,6 +73,14 @@ export function AdminGenreManager() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 p-6">
+      <Link
+        href="/admin"
+        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="size-3.5" />
+        Painel administrativo
+      </Link>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2">
