@@ -8,6 +8,7 @@ import { ThemeToggle } from '@components/ThemeToggle';
 
 import { Providers } from './providers';
 
+import '@web/lib/zod-pt-br';
 import './globals.css';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });

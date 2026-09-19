@@ -59,25 +59,14 @@ export function AdminGenreManager() {
   const [genrePanel, setGenrePanel] =
     useState<GenrePanel>(null);
 
-  const genreForm = useGenreForm(
-    genrePanel?.mode === 'edit' ? genrePanel.genre : null,
-  );
-
-  const genrePending =
-    createGenreMutation.isPending ||
-    updateGenreMutation.isPending;
-
-  const submitGenre = genreForm.handleSubmit((values) => {
-    if (genrePanel?.mode === 'edit') {
-      updateGenreMutation.mutate(
-        { id: genrePanel.genre.id, values },
-        { onSuccess: () => setGenrePanel(null) },
-      );
-    } else {
-      createGenreMutation.mutate(values, {
-        onSuccess: () => setGenrePanel(null),
-      });
-    }
+  const genreForm = useGenreForm({
+    editing:
+      genrePanel?.mode === 'edit'
+        ? genrePanel.genre
+        : null,
+    createGenreMutation,
+    updateGenreMutation,
+    onSuccess: () => setGenrePanel(null),
   });
 
   const genres = query.data ?? [];
@@ -183,7 +172,7 @@ export function AdminGenreManager() {
       <Dialog
         open={genrePanel !== null}
         onOpenChange={(open) => {
-          if (!open && !genrePending) setGenrePanel(null);
+          if (!open && !genreForm.isPending) setGenrePanel(null);
         }}
       >
         <DialogContent>
@@ -200,10 +189,10 @@ export function AdminGenreManager() {
           </DialogHeader>
 
           <GenreForm
-            form={genreForm}
-            onSubmit={submitGenre}
+            form={genreForm.form}
+            onSubmit={genreForm.handleSubmit}
             onCancel={() => setGenrePanel(null)}
-            isPending={genrePending}
+            isPending={genreForm.isPending}
             mode={genrePanel?.mode === 'edit' ? 'edit' : 'create'}
           />
         </DialogContent>

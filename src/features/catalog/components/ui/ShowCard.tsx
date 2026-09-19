@@ -3,16 +3,13 @@ import Link from 'next/link';
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent } from '@components/ui/card';
 
+import { formatPriceBRL } from '@catalog/lib';
+
 import type { ShowCardModel } from '@catalog/server/types';
 
 interface ShowCardProps {
   show: ShowCardModel;
 }
-
-const BRL = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-});
 
 const SHORT_DATE = new Intl.DateTimeFormat('pt-BR', {
   day: '2-digit',
@@ -22,8 +19,8 @@ const SHORT_DATE = new Intl.DateTimeFormat('pt-BR', {
 export function ShowCard({ show }: ShowCardProps) {
   const priceLabel =
     show.price_min === show.price_max
-      ? BRL.format(show.price_min)
-      : `${BRL.format(show.price_min)} – ${BRL.format(show.price_max)}`;
+      ? formatPriceBRL(show.price_min)
+      : `${formatPriceBRL(show.price_min)} – ${formatPriceBRL(show.price_max)}`;
 
   return (
     <Link

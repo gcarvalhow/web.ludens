@@ -87,78 +87,23 @@ export function AdminCatalogManager() {
   const [cancelTarget, setCancelTarget] =
     useState<AdminSession | null>(null);
 
-  const showForm = useShowForm(
-    showPanel?.mode === 'edit'
-      ? showPanel.show
-      : null,
-  );
+  const showForm = useShowForm({
+    editing:
+      showPanel?.mode === 'edit'
+        ? showPanel.show
+        : null,
+    createShowMutation,
+    updateShowMutation,
+    onSuccess: () => setShowPanel(null),
+  });
 
-  const sessionForm = useSessionForm(
-    sessionPanel?.session ?? null,
-  );
-
-  const showPending =
-    createShowMutation.isPending ||
-    updateShowMutation.isPending;
-
-  const sessionPending =
-    createSessionMutation.isPending ||
-    updateSessionMutation.isPending;
-
-  const submitShow = showForm.handleSubmit(
-    (values) => {
-      if (showPanel?.mode === 'edit') {
-        updateShowMutation.mutate(
-          {
-            id: showPanel.show.id,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setShowPanel(null),
-          },
-        );
-      } else {
-        createShowMutation.mutate(
-          values,
-          {
-            onSuccess: () =>
-              setShowPanel(null),
-          },
-        );
-      }
-    },
-  );
-
-  const submitSession =
-    sessionForm.handleSubmit((values) => {
-      if (!sessionPanel) return;
-
-      if (sessionPanel.session) {
-        updateSessionMutation.mutate(
-          {
-            id: sessionPanel.session.id,
-            showId: sessionPanel.showId,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setSessionPanel(null),
-          },
-        );
-      } else {
-        createSessionMutation.mutate(
-          {
-            showId: sessionPanel.showId,
-            values,
-          },
-          {
-            onSuccess: () =>
-              setSessionPanel(null),
-          },
-        );
-      }
-    });
+  const sessionForm = useSessionForm({
+    editing: sessionPanel?.session ?? null,
+    showId: sessionPanel?.showId ?? null,
+    createSessionMutation,
+    updateSessionMutation,
+    onSuccess: () => setSessionPanel(null),
+  });
 
   const confirmCancel = () => {
     if (!cancelTarget) return;
@@ -331,7 +276,7 @@ export function AdminCatalogManager() {
       <Dialog
         open={showPanel !== null}
         onOpenChange={(open) => {
-          if (!open && !showPending) setShowPanel(null);
+          if (!open && !showForm.isPending) setShowPanel(null);
         }}
       >
         <DialogContent>
@@ -348,10 +293,10 @@ export function AdminCatalogManager() {
           </DialogHeader>
 
           <ShowForm
-            form={showForm}
-            onSubmit={submitShow}
+            form={showForm.form}
+            onSubmit={showForm.handleSubmit}
             onCancel={() => setShowPanel(null)}
-            isPending={showPending}
+            isPending={showForm.isPending}
             mode={showPanel?.mode === 'edit' ? 'edit' : 'create'}
           />
         </DialogContent>
@@ -360,7 +305,7 @@ export function AdminCatalogManager() {
       <Dialog
         open={sessionPanel !== null}
         onOpenChange={(open) => {
-          if (!open && !sessionPending) setSessionPanel(null);
+          if (!open && !sessionForm.isPending) setSessionPanel(null);
         }}
       >
         <DialogContent>
@@ -375,10 +320,10 @@ export function AdminCatalogManager() {
           </DialogHeader>
 
           <SessionForm
-            form={sessionForm}
-            onSubmit={submitSession}
+            form={sessionForm.form}
+            onSubmit={sessionForm.handleSubmit}
             onCancel={() => setSessionPanel(null)}
-            isPending={sessionPending}
+            isPending={sessionForm.isPending}
             mode={
               sessionPanel?.session
                 ? 'edit'
