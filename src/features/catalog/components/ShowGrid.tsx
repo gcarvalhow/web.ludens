@@ -1,6 +1,6 @@
 'use client';
 
-import { Drama, RotateCw } from 'lucide-react';
+import { RotateCw } from 'lucide-react';
 
 import {
   Alert,
@@ -9,6 +9,7 @@ import {
 } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
+import { TheaterMasksIcon } from '@components/TheaterMasksIcon';
 
 import {
   Pagination,
@@ -39,28 +40,18 @@ export function ShowGrid() {
 
   return (
     <section className="mx-auto max-w-5xl space-y-6 p-6">
-      <div className="relative overflow-hidden rounded-2xl border border-border">
-        <img
-          src="/images/home-hero.jpg"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-6 sm:p-8">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2.5">
+          <TheaterMasksIcon className="size-full" />
+        </span>
 
-        <div className="relative flex items-center gap-3 p-6 sm:p-8">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Drama className="size-6" />
-          </span>
-
-          <div>
-            {/* Cor fixa (não usa text-foreground/text-muted-foreground):
-                o fundo é sempre a imagem clara do hero, em qualquer tema. */}
-            <h1 className="font-heading text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
-              Espetáculos em cartaz
-            </h1>
-            <p className="text-sm text-neutral-600 sm:text-base">
-              Encontre a próxima sessão do seu espetáculo favorito.
-            </p>
-          </div>
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
+            Espetáculos em cartaz
+          </h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
+            Encontre a próxima sessão do seu espetáculo favorito.
+          </p>
         </div>
       </div>
 
@@ -93,8 +84,8 @@ export function ShowGrid() {
       ) : query.data &&
         query.data.items.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
-          <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Drama className="size-6" />
+          <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 p-2.5">
+            <TheaterMasksIcon className="size-full" />
           </span>
 
           <p className="text-sm text-muted-foreground">

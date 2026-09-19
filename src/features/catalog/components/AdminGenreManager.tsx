@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 import {
   ArrowLeft,
-  Drama,
   Plus,
   RotateCw,
   TriangleAlert,
@@ -21,6 +20,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
+import { TheaterMasksIcon } from '@components/TheaterMasksIcon';
 
 import {
   GenreForm,
@@ -75,8 +75,8 @@ export function AdminGenreManager() {
     <main className="mx-auto max-w-4xl space-y-6 p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <Drama className="size-5" />
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 p-2">
+            <TheaterMasksIcon className="size-full" />
           </span>
 
           <div>
@@ -134,8 +134,8 @@ export function AdminGenreManager() {
       {!query.isLoading && !query.isError ? (
         genres.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-10 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Drama className="size-6" />
+            <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 p-2.5">
+              <TheaterMasksIcon className="size-full" />
             </span>
 
             <div className="space-y-1">
