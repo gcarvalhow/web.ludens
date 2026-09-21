@@ -153,3 +153,5 @@ merge: `npm run lint` + `npm run test` + `npm run build` verdes + 1 aprovação.
 > senha, sessão autenticada) implementada e integrada com o `api.ludens` real
 > — ver `src/features/account/README.md`. Demais features (`catalog`,
 > `booking`, `checkout`) entram por spec.
+
+<!-- teste de preview deploy -->
